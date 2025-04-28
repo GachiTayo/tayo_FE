@@ -34,7 +34,7 @@ class _MainScaffoldState extends State<MainScaffold> {
               context.go('/home');
               break;
             case 2:
-              context.go('/profile');
+              context.go('/mypage');
               break;
           }
         },

@@ -1,11 +1,11 @@
 // lib/config/routes.dart
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tayo_fe/screens/mypage/mypage_screen.dart';
 import '../screens/login/login_screen.dart';
-import '../screens/login/additional_info_screen.dart';
 import '../screens/home/home_screen.dart';
-import '../screens/rides/rides_screen.dart';
-import '../screens/profile/profile_screen.dart';
+import '../screens/login/signin_screen.dart';
+import '../screens/myrides/myrides.dart';
 import '../widgets/common/main_scaffold.dart';
 
 class AppRouter {
@@ -14,8 +14,8 @@ class AppRouter {
     routes: [
       GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
       GoRoute(
-        path: '/additional-info',
-        builder: (context, state) => const AdditionalInfoScreen(),
+        path: '/signin',
+        builder: (context, state) => const SignInScreen(),
       ),
       ShellRoute(
         builder: (context, state, child) => MainScaffold(child: child),
@@ -26,11 +26,11 @@ class AppRouter {
           ),
           GoRoute(
             path: '/rides',
-            builder: (context, state) => const RidesScreen(),
+            builder: (context, state) => const MyRidesScreen(),
           ),
           GoRoute(
-            path: '/profile',
-            builder: (context, state) => const ProfileScreen(),
+            path: '/mypage',
+            builder: (context, state) => const MyPageScreen(),
           ),
         ],
       ),

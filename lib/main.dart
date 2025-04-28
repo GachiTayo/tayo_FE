@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'Campus Carpool',
+      title: '같이타요',
       theme: AppTheme.lightTheme,
       routerConfig: AppRouter.router,
     );
