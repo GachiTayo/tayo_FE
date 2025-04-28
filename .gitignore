@@ -8,7 +8,6 @@
 .melody
 generated_plugin_registrant.dart
 build/
-pubspec.lock
 
 # Flutter iOS related
 ios/Flutter/Flutter.framework
