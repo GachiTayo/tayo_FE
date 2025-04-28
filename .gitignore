@@ -1,17 +1,16 @@
-# Flutter
-build/
+# ===================== #
+#   Flutter / Dart      #
+# ===================== #
 .dart_tool/
-.packages
 .flutter-plugins
 .flutter-plugins-dependencies
+.packages
 .melody
 generated_plugin_registrant.dart
+build/
+pubspec.lock
 
-# Flutter environment-specific
-.env
-.env.*
-
-# iOS
+# Flutter iOS related
 ios/Flutter/Flutter.framework
 ios/Flutter/Flutter.podspec
 ios/Flutter/Generated.xcconfig
@@ -20,15 +19,52 @@ ios/Pods/
 ios/.symlinks/
 ios/Flutter/App.framework
 
-# Android
+# Flutter Android related
 android/.gradle/
 android/.idea/
 android/local.properties
 android/*.iml
 android/captures/
 android/gradle.properties
+android/app/debug
+android/app/profile
+android/app/release
 
-# VS Code
+# Flutter environment-specific files
+.env
+.env.*
+
+# Dart Pub cache
+.pub-cache/
+.pub/
+
+# Flutter Documentation
+**/doc/api/
+
+# Flutter Symbolication / Obfuscation
+app.*.symbols
+app.*.map.json
+
+# ===================== #
+#   Spring Boot         #
+# ===================== #
+*.class
+*.jar
+*.war
+*.ear
+target/
+build/
+
+# Spring Boot Environment files
+application.properties
+application.yml
+application-*.properties
+application-*.yml
+
+# ===================== #
+#   Editor Configs      #
+# ===================== #
+# VSCode
 .vscode/
 
 # IntelliJ / Android Studio
@@ -38,28 +74,9 @@ android/gradle.properties
 *.iws
 out/
 
-# Dart
-pubspec.lock
-
-# Spring Boot
-*.class
-*.jar
-*.war
-*.ear
-target/
-build/
-
-# Spring Boot environment-specific
-application.properties
-application.yml
-application-*.properties
-application-*.yml
-
-# Logs
-*.log
-logs/
-*.tmp
-
+# ===================== #
+#   OS Specific Files   #
+# ===================== #
 # macOS
 .DS_Store
 
@@ -67,5 +84,21 @@ logs/
 Thumbs.db
 ehthumbs.db
 
-# Node.js (if you have frontend parts)
+# ===================== #
+#   Node.js (if exists) #
+# ===================== #
 node_modules/
+
+# ===================== #
+#   Miscellaneous       #
+# ===================== #
+*.log
+logs/
+*.tmp
+*.pyc
+*.swp
+.atom/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
