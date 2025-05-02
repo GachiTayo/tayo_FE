@@ -74,6 +74,9 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+  assets:
+    - assets/logo/login.svg
+
   fonts:
     - family: One
       fonts:
@@ -119,3 +122,8 @@ flutter:
       fonts:
         - asset: assets/fonts/Pretendard-Black.ttf
           weight: 900
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/logo/app.png"
