@@ -15,7 +15,7 @@ class HomeScreen extends StatelessWidget {
             const Icon(Icons.home, size: 80),
             const SizedBox(height: 16),
             Text(
-              'Home Screen',
+              'Home Screen', //주석
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             const SizedBox(height: 8),
