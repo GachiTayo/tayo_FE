@@ -4,8 +4,8 @@ import 'text_styles.dart';
 
 class AppTheme {
   // Define your color scheme
-  static const Color primaryColor = Color(0xFF3F51B5);
-  static const Color accentColor = Color(0xFF448AFF);
+  static const Color primaryColor = Color(0xFFA6FE70);
+  static const Color accentColor = Color(0xFF131D0C);
   static const Color textColor = Color(0xFF333333);
   static const Color lightGrey = Color(0xFFEEEEEE);
 

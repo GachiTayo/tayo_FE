@@ -1,7 +1,10 @@
 // lib/screens/login/login_screen.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tayo_fe/core/utils/icon_paths.dart';
 import 'package:tayo_fe/providers/auth_provider.dart';
 
 //색깔 따오는거랑 #2345 값으로 넣는 법
@@ -15,27 +18,18 @@ class LoginScreen extends StatelessWidget {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        color: Colors.green, //이거 색깔 수정해야함
+        color: Theme.of(context).colorScheme.primary,
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(24.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // App logo placeholder
-                Container(
-                  width: 120,
-                  height: 120,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    Icons.directions_car,
-                    size: 60,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
+                SvgPicture.asset(
+                  IconPaths.getIcon('login_logo'),
+                  fit: BoxFit.cover,
                 ),
                 // App name
                 // Text(
@@ -44,7 +38,7 @@ class LoginScreen extends StatelessWidget {
                 //     fontWeight: FontWeight.bold,
                 //   ),
                 // ),
-                const SizedBox(height: 224),
+                //const SizedBox(height: 224),
                 // Tagline
                 Text(
                   '한동대학교 메일로만 가입이 가능해요',
@@ -54,33 +48,33 @@ class LoginScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 17),
                 // Google Sign In button
-                ElevatedButton.icon(
-                  onPressed: () async {
-                    final authProvider = Provider.of<AuthProvider>(
-                      context,
-                      listen: false,
-                    );
-                    final success = await authProvider.signInWithGoogle();
-
-                    if (success && context.mounted) {
-                      context.go('/signin');
-                    } else if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Sign in failed. Please try again.'),
-                        ),
+                SizedBox(
+                  width: 342.w,
+                  height: 58.h,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      final authProvider = Provider.of<AuthProvider>(
+                        context,
+                        listen: false,
                       );
-                    }
-                  },
-                  // icon: const Icon(Icons.login),
-                  label: const Text('구글 로그인'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 20,
-                      horizontal: 135,
+                      final success = await authProvider.signInWithGoogle();
+
+                      if (success && context.mounted) {
+                        context.go('/signin');
+                      } else if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Sign in failed. Please try again.'),
+                          ),
+                        );
+                      }
+                    },
+                    child: const Text('구글 로그인'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+
+                      padding: EdgeInsets.zero,
                     ),
-                    minimumSize: const Size(double.infinity, 58),
                   ),
                 ),
               ],

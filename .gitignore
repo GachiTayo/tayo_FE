@@ -101,3 +101,6 @@ logs/
 .svn/
 .swiftpm/
 migrate_working_dir/
+
+# 추가핑 
+pubspec.lock

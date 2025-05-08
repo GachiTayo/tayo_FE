@@ -50,6 +50,8 @@ dependencies:
   # UI utilities
   flutter_svg: ^2.1.0 # SVG rendering
   cached_network_image: ^3.4.1 # Image caching
+  flutter_screenutil: ^5.9.3 # auto-sizing
+  get: ^4.7.2
 
 dev_dependencies:
   flutter_test:
@@ -76,6 +78,7 @@ flutter:
 
   assets:
     - assets/logo/login.svg
+    - assets/icons/login.svg
 
   fonts:
     - family: One
