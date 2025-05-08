@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       title: '같이타요',
       theme: AppTheme.lightTheme,
+      debugShowCheckedModeBanner: false, // debug banner
       routerConfig: AppRouter.router,
     );
   }

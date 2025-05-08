@@ -15,7 +15,7 @@ class LoginScreen extends StatelessWidget {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        color: Colors.green, //이거 색깔 수정해야함
+        color: Theme.of(context).colorScheme.primary,
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(24.0),
@@ -27,10 +27,6 @@ class LoginScreen extends StatelessWidget {
                 Container(
                   width: 120,
                   height: 120,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                    shape: BoxShape.circle,
-                  ),
                   child: Icon(
                     Icons.directions_car,
                     size: 60,
