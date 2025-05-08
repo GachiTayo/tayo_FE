@@ -1,7 +1,9 @@
 // lib/screens/login/login_screen.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tayo_fe/core/utils/icon_paths.dart';
 import 'package:tayo_fe/providers/auth_provider.dart';
 
 //색깔 따오는거랑 #2345 값으로 넣는 법
@@ -27,10 +29,9 @@ class LoginScreen extends StatelessWidget {
                 Container(
                   width: 120,
                   height: 120,
-                  child: Icon(
-                    Icons.directions_car,
-                    size: 60,
-                    color: Theme.of(context).colorScheme.primary,
+                  child: SvgPicture.asset(
+                    IconPaths.getIcon('logo'),
+                    fit: BoxFit.contain,
                   ),
                 ),
                 // App name
