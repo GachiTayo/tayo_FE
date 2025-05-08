@@ -1,5 +1,6 @@
 // lib/screens/login/login_screen.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
@@ -22,7 +23,7 @@ class LoginScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(24.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // App logo placeholder
@@ -37,7 +38,7 @@ class LoginScreen extends StatelessWidget {
                 //     fontWeight: FontWeight.bold,
                 //   ),
                 // ),
-                const SizedBox(height: 224),
+                //const SizedBox(height: 224),
                 // Tagline
                 Text(
                   '한동대학교 메일로만 가입이 가능해요',
@@ -47,33 +48,33 @@ class LoginScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 17),
                 // Google Sign In button
-                ElevatedButton.icon(
-                  onPressed: () async {
-                    final authProvider = Provider.of<AuthProvider>(
-                      context,
-                      listen: false,
-                    );
-                    final success = await authProvider.signInWithGoogle();
-
-                    if (success && context.mounted) {
-                      context.go('/signin');
-                    } else if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Sign in failed. Please try again.'),
-                        ),
+                SizedBox(
+                  width: 342.w,
+                  height: 58.h,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      final authProvider = Provider.of<AuthProvider>(
+                        context,
+                        listen: false,
                       );
-                    }
-                  },
-                  // icon: const Icon(Icons.login),
-                  label: const Text('구글 로그인'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 20,
-                      horizontal: 135,
+                      final success = await authProvider.signInWithGoogle();
+
+                      if (success && context.mounted) {
+                        context.go('/signin');
+                      } else if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Sign in failed. Please try again.'),
+                          ),
+                        );
+                      }
+                    },
+                    child: const Text('구글 로그인'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+
+                      padding: EdgeInsets.zero,
                     ),
-                    minimumSize: const Size(double.infinity, 58),
                   ),
                 ),
               ],

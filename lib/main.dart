@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'config/routes.dart';
 import 'config/theme.dart';
 import 'providers/auth_provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() {
   runApp(
@@ -19,11 +20,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: '같이타요',
-      theme: AppTheme.lightTheme,
-      debugShowCheckedModeBanner: false, // debug banner
-      routerConfig: AppRouter.router,
+    return ScreenUtilInit(
+      designSize: const Size(390, 844), // 디자인 기본화면 설정
+      minTextAdapt: true,
+      builder: (context, child) {
+        return MaterialApp.router(
+          title: '같이타요',
+          theme: AppTheme.lightTheme,
+          debugShowCheckedModeBanner: false,
+          routerConfig: AppRouter.router,
+        );
+      },
     );
   }
 }
