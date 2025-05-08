@@ -26,13 +26,9 @@ class LoginScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // App logo placeholder
-                Container(
-                  width: 120,
-                  height: 120,
-                  child: SvgPicture.asset(
-                    IconPaths.getIcon('logo'),
-                    fit: BoxFit.contain,
-                  ),
+                SvgPicture.asset(
+                  IconPaths.getIcon('login_logo'),
+                  fit: BoxFit.cover,
                 ),
                 // App name
                 // Text(

@@ -1,7 +1,7 @@
 class IconPaths {
-  static const String basePath = 'assets/';
+  static const String basePath = 'assets/icons/';
 
-  static const String logo = 'logo/${basePath}logo.svg';
+  static const String login_logo = '${basePath}login.svg';
 
   static String getIcon(String iconName) {
     return '$basePath$iconName.svg';
