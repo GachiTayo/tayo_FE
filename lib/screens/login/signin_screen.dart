@@ -1,5 +1,6 @@
 // lib/screens/login/signin_screen.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tayo_fe/providers/auth_provider.dart';
@@ -25,71 +26,86 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Additional Information')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Welcome!',
+              '회원가입',
               style: Theme.of(
                 context,
               ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 8),
-            Text(
-              'Please provide some additional information (optional)',
-              style: Theme.of(
-                context,
-              ).textTheme.bodyLarge?.copyWith(color: Colors.grey[600]),
+            SizedBox(height: 45.h),
+            // 이름
+            Text('이름', style: Theme.of(context).textTheme.titleMedium),
+            SizedBox(height: 14.h),
+            TextField(
+              controller: _bankAccountController,
+              decoration: const InputDecoration(labelText: '이름을 입력하세요'),
+              keyboardType: TextInputType.number,
             ),
-            const SizedBox(height: 32),
-
-            Text(
-              'Bank Account Information',
-              style: Theme.of(context).textTheme.titleMedium,
+            SizedBox(height: 28.h),
+            // 이메일
+            Text('이메일', style: Theme.of(context).textTheme.titleMedium),
+            SizedBox(height: 14.h),
+            TextField(
+              controller: _bankAccountController,
+              decoration: const InputDecoration(labelText: '이메일을 입력하세요'),
+              keyboardType: TextInputType.number,
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 16.h),
             Text(
-              'This is optional and will be used for payments',
+              '한동대학교 메일로만 가입이 가능해요',
               style: Theme.of(
                 context,
               ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 28.h),
+            // 계좌번호
+            Text('계좌번호 및 은행명', style: Theme.of(context).textTheme.titleMedium),
+            SizedBox(height: 14.h),
             TextField(
               controller: _bankAccountController,
               decoration: const InputDecoration(
-                labelText: 'Bank Account Number',
-                hintText: 'Enter your bank account (optional)',
+                labelText: '계좌번호를 입력하세요',
+                hintText: '계좌번호를 입력하세요 ( 필수 X )',
               ),
               keyboardType: TextInputType.number,
             ),
-
-            const SizedBox(height: 32),
+            SizedBox(height: 16.h),
             Text(
-              'Vehicle Information',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'This is optional and will be used for carpool offers',
+              '마이페이지에서 내용을 수정할 수 있어요',
               style: Theme.of(
                 context,
               ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 28.h),
+
+            // 차량번호
+            Text('차량번호', style: Theme.of(context).textTheme.titleMedium),
+            SizedBox(height: 14.h),
             TextField(
-              controller: _carNumberController,
+              controller: _bankAccountController,
               decoration: const InputDecoration(
-                labelText: 'Car Number',
-                hintText: 'Enter your car number (optional)',
+                labelText: '계좌번호를 입력하세요',
+                hintText: '계좌번호를 입력하세요 ( 필수 X )',
               ),
-              textCapitalization: TextCapitalization.characters,
+              keyboardType: TextInputType.number,
             ),
+            SizedBox(height: 16.h),
+            Text(
+              '마이페이지에서 내용을 수정할 수 있어요',
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
+            ),
+            SizedBox(height: 28.h),
 
             const SizedBox(height: 48),
+
+            // TODO: 수정
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -118,17 +134,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 50),
                 ),
-                child: const Text('Complete Registration'),
-              ),
-            ),
-            const SizedBox(height: 16),
-            SizedBox(
-              width: double.infinity,
-              child: TextButton(
-                onPressed: () {
-                  context.go('/home');
-                },
-                child: const Text('Skip for now'),
+                child: const Text('시작하기'),
               ),
             ),
           ],

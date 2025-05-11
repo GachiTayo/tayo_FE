@@ -26,6 +26,7 @@ class LoginScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                Spacer(flex: 2),
                 // App logo placeholder
                 SvgPicture.asset(IconPaths.getIcon('login'), fit: BoxFit.cover),
                 // App name
@@ -43,6 +44,7 @@ class LoginScreen extends StatelessWidget {
                     context,
                   ).textTheme.bodyLarge?.copyWith(color: Colors.black),
                 ),
+                Spacer(flex: 2),
                 const SizedBox(height: 17),
                 // Google Sign In button
                 SizedBox(
@@ -74,6 +76,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+                Spacer(flex: 1),
               ],
             ),
           ),
