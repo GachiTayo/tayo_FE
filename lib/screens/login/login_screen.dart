@@ -36,15 +36,16 @@ class LoginScreen extends StatelessWidget {
                 //     fontWeight: FontWeight.bold,
                 //   ),
                 // ),
-                //const SizedBox(height: 224),
+                //SizedBox(height: 224),
                 // Tagline
+                Spacer(flex: 2),
                 Text(
                   '한동대학교 메일로만 가입이 가능해요',
                   style: Theme.of(
                     context,
                   ).textTheme.bodyLarge?.copyWith(color: Colors.black),
                 ),
-                Spacer(flex: 2),
+                //Spacer(flex: 2),
                 const SizedBox(height: 17),
                 // Google Sign In button
                 SizedBox(
@@ -68,11 +69,18 @@ class LoginScreen extends StatelessWidget {
                         );
                       }
                     },
-                    child: const Text('구글 로그인'),
+                    child: Text(
+                        '구글 로그인',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                        )
+                    ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-
+                      backgroundColor: const Color(0xFF32392E),
                       padding: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      )
                     ),
                   ),
                 ),
