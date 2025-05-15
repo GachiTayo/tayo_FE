@@ -1,10 +1,10 @@
-// lib/screens/login/signin_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tayo_fe/providers/auth_provider.dart';
+import 'package:tayo_fe/screens/login/login_modal.dart';
 
 import '../../core/utils/icon_paths.dart';
 
@@ -16,11 +16,15 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _bankAccountController = TextEditingController();
   final TextEditingController _carNumberController = TextEditingController();
 
   @override
   void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
     _bankAccountController.dispose();
     _carNumberController.dispose();
     super.dispose();
@@ -34,9 +38,14 @@ class _SignInScreenState extends State<SignInScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
-            Center(child: SvgPicture.asset(IconPaths.getIcon('signin'), fit: BoxFit.cover)),
+            Center(
+              child: SvgPicture.asset(
+                IconPaths.getIcon('signin'),
+                fit: BoxFit.cover,
+              ),
+            ),
             SizedBox(height: 48.h),
+
             // 이름
             Text('이름', style: Theme.of(context).textTheme.titleMedium),
             SizedBox(height: 14.h),
@@ -44,12 +53,12 @@ class _SignInScreenState extends State<SignInScreen> {
               width: 342.w,
               height: 52.h,
               child: TextField(
-                controller: _bankAccountController,
+                controller: _nameController,
                 decoration: const InputDecoration(labelText: '이름을 입력하세요'),
-                keyboardType: TextInputType.number,
               ),
             ),
             SizedBox(height: 28.h),
+
             // 이메일
             Text('이메일', style: Theme.of(context).textTheme.titleMedium),
             SizedBox(height: 14.h),
@@ -57,9 +66,8 @@ class _SignInScreenState extends State<SignInScreen> {
               width: 342.w,
               height: 52.h,
               child: TextField(
-                controller: _bankAccountController,
+                controller: _emailController,
                 decoration: const InputDecoration(labelText: '이메일을 입력하세요'),
-                keyboardType: TextInputType.number,
               ),
             ),
             SizedBox(height: 11.h),
@@ -70,6 +78,7 @@ class _SignInScreenState extends State<SignInScreen> {
               ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
             ),
             SizedBox(height: 28.h),
+
             // 계좌번호
             Text('계좌번호 및 은행명', style: Theme.of(context).textTheme.titleMedium),
             SizedBox(height: 14.h),
@@ -82,7 +91,6 @@ class _SignInScreenState extends State<SignInScreen> {
                   labelText: '계좌번호를 입력하세요',
                   hintText: '계좌번호를 입력하세요 ( 필수 X )',
                 ),
-                keyboardType: TextInputType.number,
               ),
             ),
             SizedBox(height: 11.h),
@@ -101,12 +109,11 @@ class _SignInScreenState extends State<SignInScreen> {
               width: 342.w,
               height: 52.h,
               child: TextField(
-                controller: _bankAccountController,
+                controller: _carNumberController,
                 decoration: const InputDecoration(
-                  labelText: '계좌번호를 입력하세요',
-                  hintText: '계좌번호를 입력하세요 ( 필수 X )',
+                  labelText: '차량번호를 입력하세요',
+                  hintText: '차량번호를 입력하세요 ( 필수 X )',
                 ),
-                keyboardType: TextInputType.number,
               ),
             ),
             SizedBox(height: 16.h),
@@ -117,12 +124,12 @@ class _SignInScreenState extends State<SignInScreen> {
               ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
             ),
             SizedBox(height: 28.h),
-
             const SizedBox(height: 48),
 
-            // TODO: 수정
+            // 버튼
             Row(
               children: [
+                // 뒤로가기 버튼
                 SizedBox(
                   width: 165.w,
                   height: 50.h,
@@ -137,8 +144,8 @@ class _SignInScreenState extends State<SignInScreen> {
                         carNumber: _carNumberController.text,
                       );
 
-                      if (success && context.mounted) { // 이것도 아닌것 같고..
-                        context.go('../'); //이거 맞는지..
+                      if (success && context.mounted) {
+                        context.go('../');
                       } else if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
@@ -156,11 +163,32 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ),
                 SizedBox(width: 12.w),
+
+                // 시작하기 버튼
                 SizedBox(
                   width: 165.w,
                   height: 50.h,
                   child: ElevatedButton(
                     onPressed: () async {
+                      final name = _nameController.text.trim();
+                      final email = _emailController.text.trim();
+
+                      if (name.isEmpty || email.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('이름과 이메일을 모두 입력해주세요.')),
+                        );
+                        return;
+                      }
+
+                      if (!(email.endsWith('@handong.ac.kr') ||
+                          email.endsWith('@handong.edu'))) {
+                        showDialog(
+                          context: context,
+                          builder: (context) => const LoginModal(),
+                        );
+                        return;
+                      }
+
                       final authProvider = Provider.of<AuthProvider>(
                         context,
                         listen: false,
