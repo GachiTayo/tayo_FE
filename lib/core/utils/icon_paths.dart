@@ -2,6 +2,7 @@ class IconPaths {
   static const String basePath = 'assets/icons/';
 
   static const String login = '${basePath}login.svg';
+  static const String signin = '${basePath}signin.svg';
 
   static String getIcon(String iconName) {
     return '$basePath$iconName.svg';

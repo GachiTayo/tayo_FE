@@ -79,6 +79,7 @@ flutter:
   assets:
     - assets/logo/login.svg
     - assets/icons/login.svg
+    - assets/icons/signin.svg
 
   fonts:
     - family: One
