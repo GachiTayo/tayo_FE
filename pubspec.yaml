@@ -52,6 +52,7 @@ dependencies:
   cached_network_image: ^3.4.1 # Image caching
   flutter_screenutil: ^5.9.3 # auto-sizing
   get: ^4.7.2
+  flutter_dotenv: ^5.2.1 # env 파일
 
 dev_dependencies:
   flutter_test:
