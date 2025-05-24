@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tayo_fe/providers/auth_provider.dart';
+import 'my_info_screen.dart';
+import 'usage_history_screen.dart';
 
 class MyPageScreen extends StatelessWidget {
   const MyPageScreen({super.key});
@@ -27,7 +29,7 @@ class MyPageScreen extends StatelessWidget {
                   width: 100,
                   height: 100,
                   decoration: const BoxDecoration(
-                    color: Color(0xFF444C39), // 짙은 초록색
+                    color: Color(0xFF444C39),
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -38,10 +40,10 @@ class MyPageScreen extends StatelessWidget {
                     width: 16,
                     height: 16,
                     decoration: BoxDecoration(
-                      color: Color(0xFFB2FF59), // 연두색
+                      color: Color(0xFFB2FF59),
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: Color(0xFFF9F9F7), // 배경색과 맞춤
+                        color: Color(0xFFF9F9F7),
                         width: 3,
                       ),
                     ),
@@ -67,42 +69,55 @@ class MyPageScreen extends StatelessWidget {
                   title: const Text(
                     '내 정보',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 17,
                       color: Color(0xFF222222),
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                  trailing: const Icon(Icons.chevron_right, color: Color(0xFFBDBDBD)),
+                  trailing: const Icon(Icons.chevron_right, color: Color(0xFFBDBDBD), size: 27),
                   onTap: () {
-                    // 내 정보 페이지로 이동
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => MyInfoScreen(userData: userData),
+                      ),
+                    );
                   },
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 24),
-                  dense: true,
-                  visualDensity: VisualDensity.compact,
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                  dense: false,
+                  minVerticalPadding: 12,
+                  visualDensity: VisualDensity(vertical: 0.0),
                 ),
                 const Divider(indent: 24, endIndent: 24, thickness: 1, height: 0),
                 ListTile(
                   title: const Text(
                     '이용 내역',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 17,
                       color: Color(0xFF222222),
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                  trailing: const Icon(Icons.chevron_right, color: Color(0xFFBDBDBD)),
+                  trailing: const Icon(Icons.chevron_right, color: Color(0xFFBDBDBD), size: 27),
                   onTap: () {
-                    // 이용 내역 페이지로 이동
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const UsageHistoryScreen(),
+                      ),
+                    );
                   },
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 24),
-                  dense: true,
-                  visualDensity: VisualDensity.compact,
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                  dense: false,
+                  minVerticalPadding: 12,
+                  visualDensity: VisualDensity(vertical: 0.0),
                 ),
                 const Divider(indent: 24, endIndent: 24, thickness: 1, height: 0),
                 ListTile(
                   title: const Text(
                     '로그아웃',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 17,
                       color: Color(0xFF222222),
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   onTap: () async {
@@ -111,9 +126,10 @@ class MyPageScreen extends StatelessWidget {
                       context.go('/login');
                     }
                   },
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 24),
-                  dense: true,
-                  visualDensity: VisualDensity.compact,
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                  dense: false,
+                  minVerticalPadding: 12,
+                  visualDensity: VisualDensity(vertical: 0.0),
                 ),
               ],
             ),
