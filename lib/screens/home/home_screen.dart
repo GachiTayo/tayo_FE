@@ -269,6 +269,19 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(right: 24, bottom: 32),
+          child: PlusButton(
+            onTap: () {
+              showDialog(
+                context: context,
+                barrierDismissible: true,
+                builder: (context) => const RoomTypeDialog(),
+              );
+            },
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       ),
     );
   }
@@ -279,7 +292,120 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-// 필터 버튼 커스텀 위젯 (테두리 없음)
+// 56x56px 연두색 + 버튼 위젯
+class PlusButton extends StatelessWidget {
+  final VoidCallback onTap;
+
+  const PlusButton({super.key, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(28),
+      child: Container(
+        width: 56,
+        height: 56,
+        decoration: const BoxDecoration(
+          color: Color(0xFFB2FF59), // 연두색
+          shape: BoxShape.circle,
+        ),
+        child: const Center(
+          child: Icon(
+            Icons.add,
+            color: Colors.black,
+            size: 32,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// 이미지와 동일한 모달 다이얼로그
+class RoomTypeDialog extends StatelessWidget {
+  const RoomTypeDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+      insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 80),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 36, horizontal: 24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              '만들고 싶은 방을 선택해 주세요',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 18,
+                color: Color(0xFF222222),
+                height: 1.6,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 32),
+            Row(
+              children: [
+                _RoomTypeButton(label: '카풀', onTap: () {
+                  Navigator.of(context).pop();
+                  // TODO: 카풀 방 생성 로직
+                }),
+                const SizedBox(width: 16),
+                _RoomTypeButton(label: '택시', onTap: () {
+                  Navigator.of(context).pop();
+                  // TODO: 택시 방 생성 로직
+                }),
+                const SizedBox(width: 16),
+                _RoomTypeButton(label: '고정카풀', onTap: () {
+                  Navigator.of(context).pop();
+                  // TODO: 고정카풀 방 생성 로직
+                }),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// 각 방 타입 버튼 위젯
+class _RoomTypeButton extends StatelessWidget {
+  final String label;
+  final VoidCallback onTap;
+  const _RoomTypeButton({required this.label, required this.onTap});
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          height: 108,
+          decoration: BoxDecoration(
+            color: const Color(0xFFF7F8F8),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Center(
+            child: Text(
+              label,
+              style: const TextStyle(
+                fontSize: 18,
+                color: Color(0xFF222222),
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// --- 이하 기존 _FilterChip, showCustomDatePicker, _PointFilterSheet, _FilterModalContainer 그대로 사용 ---
 class _FilterChip extends StatelessWidget {
   final String label;
   final bool isSelected;
@@ -316,7 +442,6 @@ class _FilterChip extends StatelessWidget {
   }
 }
 
-// 날짜 선택 모달에서 OK, Cancel 버튼 검은색 & 선택된 날짜는 primary 컬러
 Future<DateTime?> showCustomDatePicker(BuildContext context, DateTime? initialDate) {
   final primary = Theme.of(context).colorScheme.primary;
   return showDatePicker(
@@ -347,7 +472,6 @@ Future<DateTime?> showCustomDatePicker(BuildContext context, DateTime? initialDa
   );
 }
 
-// 승차/하차지점 선택 모달
 class _PointFilterSheet extends StatefulWidget {
   final String title;
   final List<String> allPoints;
@@ -437,7 +561,6 @@ class _PointFilterSheetState extends State<_PointFilterSheet> {
   }
 }
 
-// 모달 공통 컨테이너 (디자인용)
 class _FilterModalContainer extends StatelessWidget {
   final Widget child;
   const _FilterModalContainer({required this.child});
