@@ -129,42 +129,34 @@ class _SignInScreenState extends State<SignInScreen> {
             // 버튼
             Row(
               children: [
-                // 뒤로가기 버튼
+                // 뒤로가기 버튼 (OutlinedButton, 연한 회색 배경)
                 SizedBox(
                   width: 165.w,
                   height: 50.h,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      final authProvider = Provider.of<AuthProvider>(
-                        context,
-                        listen: false,
-                      );
-                      final success = await authProvider.saveAdditionalInfo(
-                        bankAccount: _bankAccountController.text,
-                        carNumber: _carNumberController.text,
-                      );
-
-                      if (success && context.mounted) {
-                        context.go('../');
-                      } else if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              'Failed to save information. Please try again.',
-                            ),
-                          ),
-                        );
-                      }
+                  child: OutlinedButton(
+                    onPressed: () {
+                      context.go('/login'); // 이전 페이지로 이동
                     },
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 50),
+                    style: OutlinedButton.styleFrom(
+                      backgroundColor: Colors.grey[100], // 연한 회색 배경
+                      side: BorderSide.none, // 테두리 제거
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
                     ),
-                    child: const Text('뒤로가기'),
+                    child: Text(
+                      '뒤로가기',
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),
+                    ),
                   ),
                 ),
                 SizedBox(width: 12.w),
 
-                // 시작하기 버튼
+// 시작하기 버튼 (ElevatedButton, 연두색 배경)
                 SizedBox(
                   width: 165.w,
                   height: 50.h,
@@ -211,9 +203,20 @@ class _SignInScreenState extends State<SignInScreen> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 50),
+                      backgroundColor: const Color(0xFFB5FF8A), // 연두색 (이미지 참고)
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      elevation: 0,
                     ),
-                    child: const Text('시작하기'),
+                    child: Text(
+                      '시작하기',
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),
+                    ),
                   ),
                 ),
               ],
