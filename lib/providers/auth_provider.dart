@@ -20,12 +20,22 @@ class AuthProvider extends ChangeNotifier {
     final storedId = prefs.getString('userId');
 
     if (storedId != null) {
-      _userId = storedId;
-      _isLoggedIn = true;
-      notifyListeners();
-      debugPrint('✅ Loaded userId from storage: $_userId');
-    } else {
-      debugPrint('❌ No saved userId found');
+      final url = Uri.parse('$baseUrl/api/users/$storedId');
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        _userId = storedId;
+        _isLoggedIn = true;
+        notifyListeners();
+        print('userId is valid and loaded: $_userId');
+      } else {
+        // 저장하고 있는 유저 확인
+        print('Stored userId is invalid. Removing...');
+        await prefs.remove('userId');
+        _userId = null;
+        _isLoggedIn = false;
+        notifyListeners();
+      }
     }
   }
 
@@ -59,10 +69,10 @@ class AuthProvider extends ChangeNotifier {
         }),
       );
 
-      debugPrint('POST ${url.toString()}');
-      debugPrint('Payload: $name, $email, $bankAccount, $carNumber');
-      debugPrint('Status: ${response.statusCode}');
-      debugPrint('Response: ${response.body}');
+      print('POST ${url.toString()}');
+      print('Payload: $name, $email, $bankAccount, $carNumber');
+      print('Status: ${response.statusCode}');
+      print('Response: ${response.body}');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final data = jsonDecode(response.body);
@@ -77,14 +87,14 @@ class AuthProvider extends ChangeNotifier {
         return true;
       } else if (response.statusCode == 500 &&
           response.body.contains('already exists')) {
-        debugPrint('❗ User already exists');
+        print('❗ User already exists');
         return false;
       } else {
-        debugPrint('❌ Failed to create user: ${response.body}');
+        print('❌ Failed to create user: ${response.body}');
         return false;
       }
     } catch (e) {
-      debugPrint('❌ Exception: $e');
+      print('❌ Exception: $e');
       return false;
     }
   }
@@ -96,5 +106,27 @@ class AuthProvider extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('userId');
     notifyListeners();
+  }
+
+  // MYPAGE ===============================
+  Future<Map<String, dynamic>?> getUserInfo() async {
+    if (_userId == null) return null;
+
+    final url = Uri.parse('$baseUrl/api/users/$_userId');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else if (response.statusCode == 404) {
+      // User not found (possibly deleted from DB)
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('userId');
+      _userId = null;
+      _isLoggedIn = false;
+      notifyListeners();
+      return null;
+    } else {
+      throw Exception('Failed to fetch user info: ${response.statusCode}');
+    }
   }
 }

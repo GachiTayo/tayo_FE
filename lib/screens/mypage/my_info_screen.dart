@@ -39,15 +39,9 @@ class MyInfoScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _InfoLabelValue(
-              label: '이름',
-              value: userData['name'] ?? '',
-            ),
+            _InfoLabelValue(label: '이름', value: userData['name'] ?? ''),
             const SizedBox(height: 24),
-            _InfoLabelValue(
-              label: '이메일',
-              value: userData['email'] ?? '',
-            ),
+            _InfoLabelValue(label: '이메일', value: userData['email'] ?? ''),
             if ((userData['carNumber'] ?? '').isNotEmpty) ...[
               const SizedBox(height: 24),
               _InfoLabelValue(

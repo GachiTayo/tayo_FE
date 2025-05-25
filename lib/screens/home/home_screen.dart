@@ -18,9 +18,18 @@ class _HomeScreenState extends State<HomeScreen> {
   List<String> dropoffSelected = [];
 
   final List<String> points = [
-    '오흠', '비벤', '야공', '버정', '현동',
-    '느헴', '채플', '다이소', '그할마', '궁물촌',
-    '유아', '이원'
+    '오흠',
+    '비벤',
+    '야공',
+    '버정',
+    '현동',
+    '느헴',
+    '채플',
+    '다이소',
+    '그할마',
+    '궁물촌',
+    '유아',
+    '이원',
   ];
 
   @override
@@ -37,19 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
             backgroundColor: Colors.white,
             elevation: 0,
             surfaceTintColor: Colors.transparent,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () => LoginModal(),
-                      child: Text("나임스테스트용"),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+
             bottom: const PreferredSize(
               preferredSize: Size.fromHeight(48),
               child: CustomMenuBar(),
@@ -63,7 +60,10 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 const SizedBox(height: 5),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 12.0,
+                    horizontal: 16.0,
+                  ),
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
@@ -74,16 +74,20 @@ class _HomeScreenState extends State<HomeScreen> {
                             label: '날짜',
                             isSelected: selectedDate != null,
                             onTap: () async {
-                              final result = await showCustomDatePicker(context, selectedDate);
+                              final result = await showCustomDatePicker(
+                                context,
+                                selectedDate,
+                              );
                               if (result != null) {
                                 setState(() {
                                   selectedDate = result;
                                 });
                               }
                             },
-                            selectedText: selectedDate == null
-                                ? '날짜'
-                                : '${selectedDate!.year % 100}.${selectedDate!.month.toString().padLeft(2, '0')}.${selectedDate!.day.toString().padLeft(2, '0')} (${_weekday(selectedDate!)})',
+                            selectedText:
+                                selectedDate == null
+                                    ? '날짜'
+                                    : '${selectedDate!.year % 100}.${selectedDate!.month.toString().padLeft(2, '0')}.${selectedDate!.day.toString().padLeft(2, '0')} (${_weekday(selectedDate!)})',
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -93,25 +97,29 @@ class _HomeScreenState extends State<HomeScreen> {
                             label: '승차지점',
                             isSelected: pickupSelected.isNotEmpty,
                             onTap: () async {
-                              final result = await showModalBottomSheet<List<String>>(
-                                context: context,
-                                isScrollControlled: true,
-                                backgroundColor: Colors.transparent,
-                                builder: (context) {
-                                  return _PointFilterSheet(
-                                    title: '승차지점',
-                                    allPoints: points,
-                                    initSelected: pickupSelected,
+                              final result =
+                                  await showModalBottomSheet<List<String>>(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    builder: (context) {
+                                      return _PointFilterSheet(
+                                        title: '승차지점',
+                                        allPoints: points,
+                                        initSelected: pickupSelected,
+                                      );
+                                    },
                                   );
-                                },
-                              );
                               if (result != null) {
                                 setState(() {
                                   pickupSelected = result;
                                 });
                               }
                             },
-                            selectedText: pickupSelected.isEmpty ? '승차지점' : pickupSelected.join(', '),
+                            selectedText:
+                                pickupSelected.isEmpty
+                                    ? '승차지점'
+                                    : pickupSelected.join(', '),
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -121,36 +129,36 @@ class _HomeScreenState extends State<HomeScreen> {
                             label: '하차지점',
                             isSelected: dropoffSelected.isNotEmpty,
                             onTap: () async {
-                              final result = await showModalBottomSheet<List<String>>(
-                                context: context,
-                                isScrollControlled: true,
-                                backgroundColor: Colors.transparent,
-                                builder: (context) {
-                                  return _PointFilterSheet(
-                                    title: '하차지점',
-                                    allPoints: points,
-                                    initSelected: dropoffSelected,
+                              final result =
+                                  await showModalBottomSheet<List<String>>(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    builder: (context) {
+                                      return _PointFilterSheet(
+                                        title: '하차지점',
+                                        allPoints: points,
+                                        initSelected: dropoffSelected,
+                                      );
+                                    },
                                   );
-                                },
-                              );
                               if (result != null) {
                                 setState(() {
                                   dropoffSelected = result;
                                 });
                               }
                             },
-                            selectedText: dropoffSelected.isEmpty ? '하차지점' : dropoffSelected.join(', '),
+                            selectedText:
+                                dropoffSelected.isEmpty
+                                    ? '하차지점'
+                                    : dropoffSelected.join(', '),
                           ),
                         ),
                       ],
                     ),
                   ),
                 ),
-                Expanded(
-                  child: Center(
-                    child: Text('카풀/택시 탭 내용'),
-                  ),
-                ),
+                Expanded(child: Center(child: Text('카풀/택시 탭 내용'))),
               ],
             ),
             // 2. 고정카풀 탭
@@ -158,7 +166,10 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 const SizedBox(height: 5),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 12.0,
+                    horizontal: 16.0,
+                  ),
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
@@ -169,16 +180,20 @@ class _HomeScreenState extends State<HomeScreen> {
                             label: '시작일',
                             isSelected: selectedStartDate != null,
                             onTap: () async {
-                              final result = await showCustomDatePicker(context, selectedStartDate);
+                              final result = await showCustomDatePicker(
+                                context,
+                                selectedStartDate,
+                              );
                               if (result != null) {
                                 setState(() {
                                   selectedStartDate = result;
                                 });
                               }
                             },
-                            selectedText: selectedStartDate == null
-                                ? '시작일'
-                                : '${selectedStartDate!.year % 100}.${selectedStartDate!.month.toString().padLeft(2, '0')}.${selectedStartDate!.day.toString().padLeft(2, '0')} (${_weekday(selectedStartDate!)})',
+                            selectedText:
+                                selectedStartDate == null
+                                    ? '시작일'
+                                    : '${selectedStartDate!.year % 100}.${selectedStartDate!.month.toString().padLeft(2, '0')}.${selectedStartDate!.day.toString().padLeft(2, '0')} (${_weekday(selectedStartDate!)})',
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -188,16 +203,20 @@ class _HomeScreenState extends State<HomeScreen> {
                             label: '종료일',
                             isSelected: selectedEndDate != null,
                             onTap: () async {
-                              final result = await showCustomDatePicker(context, selectedEndDate);
+                              final result = await showCustomDatePicker(
+                                context,
+                                selectedEndDate,
+                              );
                               if (result != null) {
                                 setState(() {
                                   selectedEndDate = result;
                                 });
                               }
                             },
-                            selectedText: selectedEndDate == null
-                                ? '종료일'
-                                : '${selectedEndDate!.year % 100}.${selectedEndDate!.month.toString().padLeft(2, '0')}.${selectedEndDate!.day.toString().padLeft(2, '0')} (${_weekday(selectedEndDate!)})',
+                            selectedText:
+                                selectedEndDate == null
+                                    ? '종료일'
+                                    : '${selectedEndDate!.year % 100}.${selectedEndDate!.month.toString().padLeft(2, '0')}.${selectedEndDate!.day.toString().padLeft(2, '0')} (${_weekday(selectedEndDate!)})',
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -207,25 +226,29 @@ class _HomeScreenState extends State<HomeScreen> {
                             label: '승차지점',
                             isSelected: pickupSelected.isNotEmpty,
                             onTap: () async {
-                              final result = await showModalBottomSheet<List<String>>(
-                                context: context,
-                                isScrollControlled: true,
-                                backgroundColor: Colors.transparent,
-                                builder: (context) {
-                                  return _PointFilterSheet(
-                                    title: '승차지점',
-                                    allPoints: points,
-                                    initSelected: pickupSelected,
+                              final result =
+                                  await showModalBottomSheet<List<String>>(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    builder: (context) {
+                                      return _PointFilterSheet(
+                                        title: '승차지점',
+                                        allPoints: points,
+                                        initSelected: pickupSelected,
+                                      );
+                                    },
                                   );
-                                },
-                              );
                               if (result != null) {
                                 setState(() {
                                   pickupSelected = result;
                                 });
                               }
                             },
-                            selectedText: pickupSelected.isEmpty ? '승차지점' : pickupSelected.join(', '),
+                            selectedText:
+                                pickupSelected.isEmpty
+                                    ? '승차지점'
+                                    : pickupSelected.join(', '),
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -235,36 +258,36 @@ class _HomeScreenState extends State<HomeScreen> {
                             label: '하차지점',
                             isSelected: dropoffSelected.isNotEmpty,
                             onTap: () async {
-                              final result = await showModalBottomSheet<List<String>>(
-                                context: context,
-                                isScrollControlled: true,
-                                backgroundColor: Colors.transparent,
-                                builder: (context) {
-                                  return _PointFilterSheet(
-                                    title: '하차지점',
-                                    allPoints: points,
-                                    initSelected: dropoffSelected,
+                              final result =
+                                  await showModalBottomSheet<List<String>>(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    builder: (context) {
+                                      return _PointFilterSheet(
+                                        title: '하차지점',
+                                        allPoints: points,
+                                        initSelected: dropoffSelected,
+                                      );
+                                    },
                                   );
-                                },
-                              );
                               if (result != null) {
                                 setState(() {
                                   dropoffSelected = result;
                                 });
                               }
                             },
-                            selectedText: dropoffSelected.isEmpty ? '하차지점' : dropoffSelected.join(', '),
+                            selectedText:
+                                dropoffSelected.isEmpty
+                                    ? '하차지점'
+                                    : dropoffSelected.join(', '),
                           ),
                         ),
                       ],
                     ),
                   ),
                 ),
-                Expanded(
-                  child: Center(
-                    child: Text('고정카풀 탭 내용'),
-                  ),
-                ),
+                Expanded(child: Center(child: Text('고정카풀 탭 내용'))),
               ],
             ),
           ],
@@ -311,11 +334,7 @@ class PlusButton extends StatelessWidget {
           shape: BoxShape.circle,
         ),
         child: const Center(
-          child: Icon(
-            Icons.add,
-            color: Colors.black,
-            size: 32,
-          ),
+          child: Icon(Icons.add, color: Colors.black, size: 32),
         ),
       ),
     );
@@ -350,20 +369,29 @@ class RoomTypeDialog extends StatelessWidget {
             const SizedBox(height: 32),
             Row(
               children: [
-                _RoomTypeButton(label: '카풀', onTap: () {
-                  Navigator.of(context).pop();
-                  // TODO: 카풀 방 생성 로직
-                }),
+                _RoomTypeButton(
+                  label: '카풀',
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    // TODO: 카풀 방 생성 로직
+                  },
+                ),
                 const SizedBox(width: 16),
-                _RoomTypeButton(label: '택시', onTap: () {
-                  Navigator.of(context).pop();
-                  // TODO: 택시 방 생성 로직
-                }),
+                _RoomTypeButton(
+                  label: '택시',
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    // TODO: 택시 방 생성 로직
+                  },
+                ),
                 const SizedBox(width: 16),
-                _RoomTypeButton(label: '고정카풀', onTap: () {
-                  Navigator.of(context).pop();
-                  // TODO: 고정카풀 방 생성 로직
-                }),
+                _RoomTypeButton(
+                  label: '고정카풀',
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    // TODO: 고정카풀 방 생성 로직
+                  },
+                ),
               ],
             ),
           ],
@@ -430,11 +458,10 @@ class _FilterChip extends StatelessWidget {
         style: TextStyle(color: isSelected ? Colors.black : Colors.grey),
       ),
       style: OutlinedButton.styleFrom(
-        backgroundColor: isSelected ? primary.withOpacity(0.15) : Color(0xFFF7F8F8),
+        backgroundColor:
+            isSelected ? primary.withOpacity(0.15) : Color(0xFFF7F8F8),
         side: BorderSide.none, // 테두리 완전히 제거
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 6),
       ),
       onPressed: onTap,
@@ -442,7 +469,10 @@ class _FilterChip extends StatelessWidget {
   }
 }
 
-Future<DateTime?> showCustomDatePicker(BuildContext context, DateTime? initialDate) {
+Future<DateTime?> showCustomDatePicker(
+  BuildContext context,
+  DateTime? initialDate,
+) {
   final primary = Theme.of(context).colorScheme.primary;
   return showDatePicker(
     context: context,
@@ -502,7 +532,10 @@ class _PointFilterSheetState extends State<_PointFilterSheet> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(widget.title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          Text(
+            widget.title,
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
           const SizedBox(height: 12),
           Wrap(
             spacing: 12,
@@ -524,9 +557,7 @@ class _PointFilterSheetState extends State<_PointFilterSheet> {
                   },
                   selectedColor: primary,
                   backgroundColor: Color(0xFFF7F8F8),
-                  labelStyle: TextStyle(
-                    color: Colors.black,
-                  ),
+                  labelStyle: TextStyle(color: Colors.black),
                   shape: StadiumBorder(),
                   side: BorderSide.none, // 테두리 완전히 제거
                 );
@@ -550,7 +581,9 @@ class _PointFilterSheetState extends State<_PointFilterSheet> {
                 backgroundColor: primary,
                 foregroundColor: Colors.black,
                 padding: const EdgeInsets.symmetric(vertical: 18),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
               child: const Text('적용하기', style: TextStyle(fontSize: 16)),
             ),
