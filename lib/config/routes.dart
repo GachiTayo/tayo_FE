@@ -8,6 +8,7 @@ import '../screens/create/taxi_create_room_screen.dart';
 import '../screens/login/login_screen.dart';
 import '../screens/home/home_screen.dart';
 import '../screens/login/signin_screen.dart';
+import '../screens/manage/room_manage_screen.dart';
 import '../screens/myrides/myrides.dart';
 import '../widgets/common/main_scaffold.dart';
 
@@ -49,7 +50,6 @@ class AppRouter {
         path: '/create-fixed-carpool',
         builder: (context, state) => const FixedCarpoolCreateRoomScreen(),
       ),
-
     ],
     errorBuilder:
         (context, state) =>
