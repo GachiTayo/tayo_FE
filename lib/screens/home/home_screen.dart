@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tayo_fe/screens/login/login_modal.dart';
 import 'package:tayo_fe/widgets/common/custom_menu_bar.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -41,14 +42,14 @@ class _HomeScreenState extends State<HomeScreen> {
       length: 2,
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(87),
+          preferredSize: const Size.fromHeight(55),
           child: AppBar(
             backgroundColor: Colors.white,
             elevation: 0,
             surfaceTintColor: Colors.transparent,
-
+            title: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween),
             bottom: const PreferredSize(
-              preferredSize: Size.fromHeight(48),
+              preferredSize: Size.fromHeight(28),
               child: CustomMenuBar(),
             ),
           ),
@@ -373,7 +374,7 @@ class RoomTypeDialog extends StatelessWidget {
                   label: '카풀',
                   onTap: () {
                     Navigator.of(context).pop();
-                    // TODO: 카풀 방 생성 로직
+                    context.go('/create-carpool');
                   },
                 ),
                 const SizedBox(width: 16),
@@ -381,7 +382,7 @@ class RoomTypeDialog extends StatelessWidget {
                   label: '택시',
                   onTap: () {
                     Navigator.of(context).pop();
-                    // TODO: 택시 방 생성 로직
+                    context.go('/create-taxi');
                   },
                 ),
                 const SizedBox(width: 16),
@@ -389,7 +390,7 @@ class RoomTypeDialog extends StatelessWidget {
                   label: '고정카풀',
                   onTap: () {
                     Navigator.of(context).pop();
-                    // TODO: 고정카풀 방 생성 로직
+                    context.go('/create-fixed-carpool');
                   },
                 ),
               ],
