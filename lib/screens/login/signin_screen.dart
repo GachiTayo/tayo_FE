@@ -156,7 +156,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
                 SizedBox(width: 12.w),
 
-// 시작하기 버튼 (ElevatedButton, 연두색 배경)
+                // 시작하기 버튼 (ElevatedButton, 연두색 배경)
                 SizedBox(
                   width: 165.w,
                   height: 50.h,
@@ -186,19 +186,23 @@ class _SignInScreenState extends State<SignInScreen> {
                         listen: false,
                       );
                       final success = await authProvider.saveAdditionalInfo(
-                        bankAccount: _bankAccountController.text,
-                        carNumber: _carNumberController.text,
+                        name: _nameController.text.trim(),
+                        email: _emailController.text.trim(),
+                        bankAccount:
+                            _bankAccountController.text.trim().isEmpty
+                                ? ''
+                                : _bankAccountController.text.trim(),
+                        carNumber:
+                            _carNumberController.text.trim().isEmpty
+                                ? ''
+                                : _carNumberController.text.trim(),
                       );
 
                       if (success && context.mounted) {
                         context.go('/home');
                       } else if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              'Failed to save information. Please try again.',
-                            ),
-                          ),
+                          const SnackBar(content: Text('이 이메일은 이미 가입되어 있어요!')),
                         );
                       }
                     },

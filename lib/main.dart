@@ -6,10 +6,15 @@ import 'config/theme.dart';
 import 'providers/auth_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final authProvider = AuthProvider();
+  await authProvider.initUser(); // ✅ load saved userId before app starts
+
   runApp(
-    MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => AuthProvider())],
+    ChangeNotifierProvider<AuthProvider>.value(
+      value: authProvider,
       child: const MyApp(),
     ),
   );
