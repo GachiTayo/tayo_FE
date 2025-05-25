@@ -10,7 +10,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final authProvider = AuthProvider();
-  await authProvider.initUser(); // ✅ load saved userId before app starts
+  await authProvider.initUser();
 
   runApp(
     ChangeNotifierProvider<AuthProvider>.value(

@@ -57,6 +57,17 @@ class LoginScreen extends StatelessWidget {
                         context,
                         listen: false,
                       );
+
+                      // ✅ Check if user is already logged in via saved userId
+                      if (authProvider.userId != null) {
+                        debugPrint(
+                          '✅ userId already exists: ${authProvider.userId}',
+                        );
+                        context.go('/home');
+                        return;
+                      }
+
+                      // Otherwise, perform Google sign-in
                       final success = await authProvider.signInWithGoogle();
 
                       if (success && context.mounted) {
@@ -70,17 +81,17 @@ class LoginScreen extends StatelessWidget {
                       }
                     },
                     child: Text(
-                        '구글 로그인',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
-                        )
+                      '구글 로그인',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF32392E),
                       padding: EdgeInsets.zero,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
-                      )
+                      ),
                     ),
                   ),
                 ),
