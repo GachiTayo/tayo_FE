@@ -161,9 +161,10 @@ class _MyPageScreenState extends State<MyPageScreen> {
                               context,
                               listen: false,
                             );
-                            await authProvider.signOut();
+                            await authProvider.signOut(); // userId 삭제
                             if (context.mounted) context.go('/login');
                           },
+
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 24,
                             vertical: 8,
