@@ -1,8 +1,9 @@
-// lib/screens/mypage/mypage_screen.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tayo_fe/providers/auth_provider.dart';
+import 'my_info_screen.dart';
+import 'usage_history_screen.dart';
 
 class MyPageScreen extends StatelessWidget {
   const MyPageScreen({super.key});
@@ -13,70 +14,128 @@ class MyPageScreen extends StatelessWidget {
     final userData = authProvider.userData;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('My Profile')),
-      body:
-          userData == null
-              ? const Center(child: CircularProgressIndicator())
-              : Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    // Profile header
-                    const CircleAvatar(
-                      radius: 50,
-                      backgroundImage: NetworkImage(
-                        'https://via.placeholder.com/150',
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      userData['name'] ?? 'User',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                    Text(
-                      userData['email'] ?? '',
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                    const SizedBox(height: 32),
-
-                    // User information
-                    const Divider(),
-                    if (userData['bankAccount'] != null &&
-                        userData['bankAccount'].isNotEmpty)
-                      ListTile(
-                        leading: const Icon(Icons.account_balance),
-                        title: const Text('Bank Account'),
-                        subtitle: Text(userData['bankAccount']),
-                      ),
-                    if (userData['carNumber'] != null &&
-                        userData['carNumber'].isNotEmpty)
-                      ListTile(
-                        leading: const Icon(Icons.directions_car),
-                        title: const Text('Car Number'),
-                        subtitle: Text(userData['carNumber']),
-                      ),
-
-                    const Spacer(),
-
-                    // Sign out button
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          await authProvider.signOut();
-                          if (context.mounted) {
-                            context.go('/login');
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
-                        ),
-                        child: const Text('Sign Out'),
-                      ),
-                    ),
-                  ],
+      backgroundColor: const Color(0xFFF9F9F7),
+      body: userData == null
+          ? const Center(child: CircularProgressIndicator())
+          : SafeArea(
+        child: Column(
+          children: [
+            const SizedBox(height: 48),
+            // 프로필 원형 + 연두색 점
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  width: 100,
+                  height: 100,
+                  decoration: const BoxDecoration(
+                    color: Color(0xFF444C39),
+                    shape: BoxShape.circle,
+                  ),
                 ),
+                Positioned(
+                  bottom: 20,
+                  right: 24,
+                  child: Container(
+                    width: 16,
+                    height: 16,
+                    decoration: BoxDecoration(
+                      color: Color(0xFFB2FF59),
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Color(0xFFF9F9F7),
+                        width: 3,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Text(
+              userData['name'] ?? '이름없음',
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF222222),
               ),
+            ),
+            const SizedBox(height: 40),
+
+            // 메뉴 리스트
+            Column(
+              children: [
+                ListTile(
+                  title: const Text(
+                    '내 정보',
+                    style: TextStyle(
+                      fontSize: 17,
+                      color: Color(0xFF222222),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  trailing: const Icon(Icons.chevron_right, color: Color(0xFFBDBDBD), size: 27),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => MyInfoScreen(userData: userData),
+                      ),
+                    );
+                  },
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                  dense: false,
+                  minVerticalPadding: 12,
+                  visualDensity: VisualDensity(vertical: 0.0),
+                ),
+                const Divider(indent: 24, endIndent: 24, thickness: 1, height: 0),
+                ListTile(
+                  title: const Text(
+                    '이용 내역',
+                    style: TextStyle(
+                      fontSize: 17,
+                      color: Color(0xFF222222),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  trailing: const Icon(Icons.chevron_right, color: Color(0xFFBDBDBD), size: 27),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const UsageHistoryScreen(),
+                      ),
+                    );
+                  },
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                  dense: false,
+                  minVerticalPadding: 12,
+                  visualDensity: VisualDensity(vertical: 0.0),
+                ),
+                const Divider(indent: 24, endIndent: 24, thickness: 1, height: 0),
+                ListTile(
+                  title: const Text(
+                    '로그아웃',
+                    style: TextStyle(
+                      fontSize: 17,
+                      color: Color(0xFF222222),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  onTap: () async {
+                    await authProvider.signOut();
+                    if (context.mounted) {
+                      context.go('/login');
+                    }
+                  },
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                  dense: false,
+                  minVerticalPadding: 12,
+                  visualDensity: VisualDensity(vertical: 0.0),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
