@@ -1,6 +1,7 @@
 // lib/providers/auth_provider.dart
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,7 +14,7 @@ class AuthProvider extends ChangeNotifier {
   String? get userId => _userId;
   Map<String, dynamic>? get userData => _userData;
 
-  final String baseUrl = 'http://localhost:8080'; // Windows only
+  final String baseUrl = dotenv.env['BASE_URL'] ?? 'http://localhost:8080';
 
   Future<void> initUser() async {
     final prefs = await SharedPreferences.getInstance();
