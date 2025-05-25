@@ -2,9 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tayo_fe/screens/mypage/mypage_screen.dart';
+import '../screens/create/carpool_create_room_screen.dart';
+import '../screens/create/fixed_carpool_create_room_screen.dart';
+import '../screens/create/taxi_create_room_screen.dart';
 import '../screens/login/login_screen.dart';
 import '../screens/home/home_screen.dart';
 import '../screens/login/signin_screen.dart';
+import '../screens/manage/room_manage_screen.dart';
 import '../screens/myrides/myrides.dart';
 import '../widgets/common/main_scaffold.dart';
 
@@ -33,6 +37,18 @@ class AppRouter {
             builder: (context, state) => const MyPageScreen(),
           ),
         ],
+      ),
+      GoRoute(
+        path: '/create-carpool',
+        builder: (context, state) => const CarpoolCreateRoomScreen(),
+      ),
+      GoRoute(
+        path: '/create-taxi',
+        builder: (context, state) => const TaxiCreateRoomScreen(),
+      ),
+      GoRoute(
+        path: '/create-fixed-carpool',
+        builder: (context, state) => const FixedCarpoolCreateRoomScreen(),
       ),
     ],
     errorBuilder:
