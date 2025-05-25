@@ -53,6 +53,7 @@ dependencies:
   flutter_screenutil: ^5.9.3 # auto-sizing
   get: ^4.7.2
   flutter_dotenv: ^5.2.1 # env 파일
+  shared_preferences: ^2.5.3 # userId 관리
 
 dev_dependencies:
   flutter_test:
