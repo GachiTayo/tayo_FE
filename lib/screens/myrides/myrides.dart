@@ -1,5 +1,121 @@
 import 'package:flutter/material.dart';
-import 'package:tayo_fe/widgets/common/custom_menu_bar.dart'; // 실제 경로에 맞게 import
+
+// 이미지와 같은 커스텀 탭바(메뉴바)
+class CustomMenuBar extends StatelessWidget {
+  const CustomMenuBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final TabController? tabController = DefaultTabController.of(context);
+    final primary = Theme.of(context).colorScheme.primary;
+
+    return SizedBox(
+      height: 48,
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          // TabBar
+          TabBar(
+            labelColor: Colors.black,
+            unselectedLabelColor: Colors.black45,
+            indicator: const BoxDecoration(), // 인디케이터 숨김
+            tabs: const [
+              Tab(text: '카풀 / 택시'),
+              Tab(text: '고정카풀'),
+            ],
+          ),
+          // 커스텀 그라데이션 라인 + 원
+          Positioned.fill(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final tabCount = 2;
+                final tabWidth = constraints.maxWidth / tabCount;
+                final selected = tabController?.index ?? 0;
+                final centerX = tabWidth * (selected + 0.5);
+
+                return IgnorePointer(
+                  child: AnimatedBuilder(
+                    animation: tabController!.animation!,
+                    builder: (context, child) {
+                      // 탭 이동 애니메이션에 따라 원 위치 계산
+                      final value = tabController.animation!.value;
+                      final animatedCenterX = tabWidth * (value + 0.5);
+
+                      return CustomPaint(
+                        painter: _TabIndicatorPainter(
+                          centerX: animatedCenterX,
+                          width: constraints.maxWidth,
+                          color: primary,
+                        ),
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TabIndicatorPainter extends CustomPainter {
+  final double centerX;
+  final double width;
+  final Color color;
+
+  _TabIndicatorPainter({
+    required this.centerX,
+    required this.width,
+    required this.color,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    // 라인과 원을 아래로 내림 (탭바 하단에 딱 맞게)
+    final y = size.height - 2; // 2px 위쪽에 위치
+
+    // shader의 시작점/끝점을 (0, y) ~ (width, y)로 맞춤
+    final linePaint = Paint()
+      ..shader = LinearGradient(
+        begin: Alignment.centerLeft,
+        end: Alignment.centerRight,
+        colors: [
+          color.withOpacity(0.0),
+          color.withOpacity(0.5),
+          color,
+          color.withOpacity(0.5),
+          color.withOpacity(0.0),
+        ],
+        stops: const [0.0, 0.15, 0.5, 0.85, 1.0],
+      ).createShader(Rect.fromPoints(
+        Offset(0, y),
+        Offset(width, y),
+      ))
+      ..strokeWidth = 4
+      ..style = PaintingStyle.stroke;
+
+    // 라인 그리기 (탭바 하단 전체)
+    canvas.drawLine(
+      Offset(0, y),
+      Offset(width, y),
+      linePaint,
+    );
+
+    // 연두색 원 (크기 0.8배: 반지름 8 → 6.4)
+    final circlePaint = Paint()..color = color;
+    canvas.drawCircle(
+      Offset(centerX, y),
+      6.4,
+      circlePaint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant _TabIndicatorPainter oldDelegate) =>
+      centerX != oldDelegate.centerX || color != oldDelegate.color || width != oldDelegate.width;
+}
 
 class MyRidesScreen extends StatelessWidget {
   const MyRidesScreen({super.key});
@@ -28,15 +144,15 @@ class MyRidesScreen extends StatelessWidget {
       length: 2, // [카풀/택시, 고정카풀]
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(87),
+          preferredSize: const Size.fromHeight(55),
           child: AppBar(
             backgroundColor: Colors.white,
             elevation: 0,
             surfaceTintColor: Colors.transparent,
             title: const SizedBox.shrink(),
             bottom: const PreferredSize(
-              preferredSize: Size.fromHeight(48),
-              child: CustomMenuBar(), // TabBar 포함
+              preferredSize: Size.fromHeight(48), // 커스텀 메뉴바 높이(48)로 수정
+              child: CustomMenuBar(), // 커스텀 탭바 적용
             ),
           ),
         ),
@@ -151,7 +267,7 @@ class _RoomCard extends StatelessWidget {
           BoxShadow(
             color: Colors.black12,
             blurRadius: 2,
-            offset: Offset(0, 1),
+            offset: const Offset(0, 1),
           )
         ],
       ),
