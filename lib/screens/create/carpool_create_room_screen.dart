@@ -41,6 +41,15 @@ class _CarpoolCreateRoomScreenState extends State<CarpoolCreateRoomScreen> {
           icon: const Icon(Icons.arrow_back, color: Color(0xFF444C39)),
           onPressed: () => Navigator.of(context).pop(),
         ),
+        title: const Text(
+          '',
+          style: TextStyle(
+            color: Color(0xFF222222),
+            fontWeight: FontWeight.w600,
+            fontSize: 18,
+          ),
+        ),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
@@ -95,7 +104,7 @@ class _CarpoolCreateRoomScreenState extends State<CarpoolCreateRoomScreen> {
               child: _InputBox(
                 text: selectedDate == null
                     ? '날짜 선택'
-                    : '${selectedDate!.year}.${selectedDate!.month.toString().padLeft(2, '0')}.${selectedDate!.day.toString().padLeft(2, '0')}',
+                    : '${selectedDate!.year % 100}.${selectedDate!.month.toString().padLeft(2, '0')}.${selectedDate!.day.toString().padLeft(2, '0')}',
                 icon: Icons.calendar_today,
                 isHint: selectedDate == null,
               ),
@@ -133,6 +142,11 @@ class _CarpoolCreateRoomScreenState extends State<CarpoolCreateRoomScreen> {
             // 승차지점
             const Text('승차지점', style: TextStyle(color: Color(0xFFBDBDBD), fontSize: 14)),
             const SizedBox(height: 8),
+            _SelectedPointRow(
+              selected: selectedPickup,
+              onDeleted: (point) => setState(() => selectedPickup.remove(point)),
+            ),
+            const SizedBox(height: 8),
             _PointSelector(
               points: points,
               selected: selectedPickup,
@@ -141,6 +155,11 @@ class _CarpoolCreateRoomScreenState extends State<CarpoolCreateRoomScreen> {
             const SizedBox(height: 24),
             // 하차지점
             const Text('하차지점', style: TextStyle(color: Color(0xFFBDBDBD), fontSize: 14)),
+            const SizedBox(height: 8),
+            _SelectedPointRow(
+              selected: selectedDropoff,
+              onDeleted: (point) => setState(() => selectedDropoff.remove(point)),
+            ),
             const SizedBox(height: 8),
             _PointSelector(
               points: points,
@@ -217,39 +236,48 @@ class _CarpoolCreateRoomScreenState extends State<CarpoolCreateRoomScreen> {
   }
 }
 
-// 재사용 위젯/함수
-class _TypeChip extends StatelessWidget {
-  final String label;
-  final bool selected;
-  final VoidCallback onTap;
-  const _TypeChip({required this.label, required this.selected, required this.onTap});
+// 선택된 승차/하차지점 위젯
+class _SelectedPointRow extends StatelessWidget {
+  final List<String> selected;
+  final void Function(String) onDeleted;
+  const _SelectedPointRow({required this.selected, required this.onDeleted});
+
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
-        decoration: BoxDecoration(
-          color: selected ? const Color(0xFFB2FF59) : Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: selected ? const Color(0xFFB2FF59) : const Color(0xFFE0E0E0),
-            width: 1.5,
+    return Row(
+      children: [
+        ...selected.map((e) => Container(
+          margin: const EdgeInsets.only(right: 8),
+          child: Chip(
+            label: Text(e, style: const TextStyle(fontWeight: FontWeight.w600)),
+            backgroundColor: const Color(0xFFB2FF59),
+            deleteIcon: const Icon(Icons.close, size: 16),
+            onDeleted: () => onDeleted(e),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
           ),
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            color: selected ? Colors.black : const Color(0xFF444C39),
-            fontWeight: FontWeight.w600,
-            fontSize: 15,
+        )),
+        for (int i = selected.length; i < 3; i++)
+          Container(
+            margin: const EdgeInsets.only(right: 8),
+            width: 48,
+            height: 32,
+            decoration: BoxDecoration(
+              border: Border.all(color: const Color(0xFFDADADA), style: BorderStyle.solid, width: 1),
+              borderRadius: BorderRadius.circular(16),
+              color: Colors.transparent,
+            ),
+            child: const Center(
+              child: Text(''),
+            ),
           ),
-        ),
-      ),
+      ],
     );
   }
 }
 
+// 포인트 선택 위젯
 class _PointSelector extends StatelessWidget {
   final List<String> points;
   final List<String> selected;
@@ -268,7 +296,7 @@ class _PointSelector extends StatelessWidget {
           onSelected: (val) {
             final newList = List<String>.from(selected);
             if (val) {
-              newList.add(e);
+              if (!newList.contains(e) && newList.length < 3) newList.add(e);
             } else {
               newList.remove(e);
             }
@@ -337,6 +365,39 @@ class _InputBox extends StatelessWidget {
           Icon(icon, size: 18, color: const Color(0xFFBDBDBD)),
         ],
       ),
+    );
+  }
+}
+
+class _TypeChip extends StatelessWidget {
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  const _TypeChip({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ChoiceChip(
+      label: Text(
+        label,
+        style: TextStyle(
+          color: selected ? Colors.black : const Color(0xFFBDBDBD),
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      selected: selected,
+      onSelected: (_) => onTap(),
+      selectedColor: const Color(0xFFB2FF59),
+      backgroundColor: const Color(0xFFF3F3F3),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      labelPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
     );
   }
 }
