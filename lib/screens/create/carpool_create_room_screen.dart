@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class CarpoolCreateRoomScreen extends StatefulWidget {
   const CarpoolCreateRoomScreen({super.key});
@@ -29,6 +30,7 @@ class _CarpoolCreateRoomScreenState extends State<CarpoolCreateRoomScreen> {
   ];
   List<String> selectedPickup = [];
   List<String> selectedDropoff = [];
+  String selectedType = '카풀';
 
   @override
   Widget build(BuildContext context) {
@@ -39,16 +41,9 @@ class _CarpoolCreateRoomScreenState extends State<CarpoolCreateRoomScreen> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Color(0xFF444C39)),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => context.go('/home'),
         ),
-        title: const Text(
-          '',
-          style: TextStyle(
-            color: Color(0xFF222222),
-            fontWeight: FontWeight.w600,
-            fontSize: 18,
-          ),
-        ),
+        title: const Text('', style: TextStyle(color: Color(0xFF222222), fontWeight: FontWeight.w600, fontSize: 18)),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -56,12 +51,14 @@ class _CarpoolCreateRoomScreenState extends State<CarpoolCreateRoomScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 구분
             const Text('구분', style: TextStyle(color: Color(0xFFBDBDBD), fontSize: 14)),
             const SizedBox(height: 8),
-            _TypeChip(label: '카풀', selected: true, onTap: () {}),
+            _TypeChip(
+              label: '카풀',
+              selected: selectedType == '카풀',
+              onTap: () => setState(() => selectedType = '카풀'),
+            ),
             const SizedBox(height: 24),
-            // 최근 생성 내역
             const Text('최근 카풀 생성 내역', style: TextStyle(color: Color(0xFFBDBDBD), fontSize: 14)),
             const SizedBox(height: 8),
             Row(
@@ -88,7 +85,6 @@ class _CarpoolCreateRoomScreenState extends State<CarpoolCreateRoomScreen> {
               }).toList(),
             ),
             const SizedBox(height: 24),
-            // 날짜
             const Text('날짜', style: TextStyle(color: Color(0xFFBDBDBD), fontSize: 14)),
             const SizedBox(height: 8),
             GestureDetector(
@@ -102,15 +98,12 @@ class _CarpoolCreateRoomScreenState extends State<CarpoolCreateRoomScreen> {
                 if (picked != null) setState(() => selectedDate = picked);
               },
               child: _InputBox(
-                text: selectedDate == null
-                    ? '날짜 선택'
-                    : '${selectedDate!.year % 100}.${selectedDate!.month.toString().padLeft(2, '0')}.${selectedDate!.day.toString().padLeft(2, '0')}',
+                text: selectedDate == null ? '날짜 선택' : '${selectedDate!.year % 100}.${selectedDate!.month.toString().padLeft(2, '0')}.${selectedDate!.day.toString().padLeft(2, '0')}',
                 icon: Icons.calendar_today,
                 isHint: selectedDate == null,
               ),
             ),
             const SizedBox(height: 20),
-            // 시간
             const Text('시간', style: TextStyle(color: Color(0xFFBDBDBD), fontSize: 14)),
             const SizedBox(height: 8),
             GestureDetector(
@@ -122,15 +115,12 @@ class _CarpoolCreateRoomScreenState extends State<CarpoolCreateRoomScreen> {
                 if (picked != null) setState(() => selectedTime = picked);
               },
               child: _InputBox(
-                text: selectedTime == null
-                    ? '시간 선택'
-                    : '${selectedTime!.hour.toString().padLeft(2, '0')}:${selectedTime!.minute.toString().padLeft(2, '0')}',
+                text: selectedTime == null ? '시간 선택' : '${selectedTime!.hour.toString().padLeft(2, '0')}:${selectedTime!.minute.toString().padLeft(2, '0')}',
                 icon: Icons.access_time,
                 isHint: selectedTime == null,
               ),
             ),
             const SizedBox(height: 20),
-            // 인원
             const Text('인원', style: TextStyle(color: Color(0xFFBDBDBD), fontSize: 14)),
             const SizedBox(height: 8),
             TextField(
@@ -139,7 +129,6 @@ class _CarpoolCreateRoomScreenState extends State<CarpoolCreateRoomScreen> {
               onChanged: (v) => setState(() => people = v),
             ),
             const SizedBox(height: 24),
-            // 승차지점
             const Text('승차지점', style: TextStyle(color: Color(0xFFBDBDBD), fontSize: 14)),
             const SizedBox(height: 8),
             _SelectedPointRow(
@@ -153,7 +142,6 @@ class _CarpoolCreateRoomScreenState extends State<CarpoolCreateRoomScreen> {
               onChanged: (list) => setState(() => selectedPickup = list),
             ),
             const SizedBox(height: 24),
-            // 하차지점
             const Text('하차지점', style: TextStyle(color: Color(0xFFBDBDBD), fontSize: 14)),
             const SizedBox(height: 8),
             _SelectedPointRow(
@@ -167,7 +155,6 @@ class _CarpoolCreateRoomScreenState extends State<CarpoolCreateRoomScreen> {
               onChanged: (list) => setState(() => selectedDropoff = list),
             ),
             const SizedBox(height: 24),
-            // 계좌
             const Text('계좌번호 및 은행명', style: TextStyle(color: Color(0xFFBDBDBD), fontSize: 14)),
             const SizedBox(height: 8),
             TextField(
@@ -175,7 +162,6 @@ class _CarpoolCreateRoomScreenState extends State<CarpoolCreateRoomScreen> {
               onChanged: (v) => setState(() => bankInfo = v),
             ),
             const SizedBox(height: 20),
-            // 가격
             const Text('가격', style: TextStyle(color: Color(0xFFBDBDBD), fontSize: 14)),
             const SizedBox(height: 8),
             TextField(
@@ -184,7 +170,6 @@ class _CarpoolCreateRoomScreenState extends State<CarpoolCreateRoomScreen> {
               onChanged: (v) => setState(() => price = v),
             ),
             const SizedBox(height: 20),
-            // 차량번호
             const Text('차번번호', style: TextStyle(color: Color(0xFFBDBDBD), fontSize: 14)),
             const SizedBox(height: 8),
             TextField(
@@ -192,7 +177,6 @@ class _CarpoolCreateRoomScreenState extends State<CarpoolCreateRoomScreen> {
               onChanged: (v) => setState(() => carNumber = v),
             ),
             const SizedBox(height: 20),
-            // 안내사항
             const Text('안내사항', style: TextStyle(color: Color(0xFFBDBDBD), fontSize: 14)),
             const SizedBox(height: 8),
             TextField(
@@ -207,7 +191,6 @@ class _CarpoolCreateRoomScreenState extends State<CarpoolCreateRoomScreen> {
               }),
             ),
             const SizedBox(height: 24),
-            // 생성하기 버튼
             SizedBox(
               width: double.infinity,
               height: 52,
@@ -220,10 +203,7 @@ class _CarpoolCreateRoomScreenState extends State<CarpoolCreateRoomScreen> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   elevation: 0,
-                  textStyle: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 17,
-                  ),
+                  textStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
                 ),
                 child: const Text('생성하기'),
               ),
@@ -236,7 +216,45 @@ class _CarpoolCreateRoomScreenState extends State<CarpoolCreateRoomScreen> {
   }
 }
 
-// 선택된 승차/하차지점 위젯
+class _TypeChip extends StatelessWidget {
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  const _TypeChip({required this.label, required this.selected, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        decoration: BoxDecoration(
+          color: selected ? const Color(0xFFB2FF59) : Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: selected ? null : Border.all(color: const Color(0xFFDADADA), width: 1),
+          boxShadow: selected ? [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ] : [],
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            color: selected ? Colors.black : const Color(0xFFBDBDBD),
+            fontSize: 15,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _SelectedPointRow extends StatelessWidget {
   final List<String> selected;
   final void Function(String) onDeleted;
@@ -245,39 +263,54 @@ class _SelectedPointRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: [
-        ...selected.map((e) => Container(
-          margin: const EdgeInsets.only(right: 8),
-          child: Chip(
-            label: Text(e, style: const TextStyle(fontWeight: FontWeight.w600)),
-            backgroundColor: const Color(0xFFB2FF59),
-            deleteIcon: const Icon(Icons.close, size: 16),
-            onDeleted: () => onDeleted(e),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
+      children: List.generate(3, (i) {
+        if (i < selected.length) {
+          return Expanded(
+            child: Container(
+              margin: const EdgeInsets.only(right: 8),
+              height: 40,
+              child: Chip(
+                label: Container(
+                  constraints: const BoxConstraints(minWidth: 96),
+                  child: Center(
+                    child: Text(
+                      selected[i],
+                      style: const TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ),
+                backgroundColor: const Color(0xFFB2FF59),
+                deleteIcon: const Icon(Icons.close, size: 16),
+                onDeleted: () => onDeleted(selected[i]),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+              ),
             ),
-          ),
-        )),
-        for (int i = selected.length; i < 3; i++)
-          Container(
-            margin: const EdgeInsets.only(right: 8),
-            width: 48,
-            height: 32,
-            decoration: BoxDecoration(
-              border: Border.all(color: const Color(0xFFDADADA), style: BorderStyle.solid, width: 1),
-              borderRadius: BorderRadius.circular(16),
-              color: Colors.transparent,
+          );
+        } else {
+          return Expanded(
+            child: Container(
+              margin: const EdgeInsets.only(right: 8),
+              height: 40,
+              child: Container(
+                constraints: const BoxConstraints(minWidth: 96),
+                decoration: BoxDecoration(
+                  border: Border.all(color: const Color(0xFFDADADA), width: 1),
+                  borderRadius: BorderRadius.circular(16),
+                  color: Colors.transparent,
+                ),
+                child: const Center(child: Text('')),
+              ),
             ),
-            child: const Center(
-              child: Text(''),
-            ),
-          ),
-      ],
+          );
+        }
+      }),
     );
   }
 }
 
-// 포인트 선택 위젯
 class _PointSelector extends StatelessWidget {
   final List<String> points;
   final List<String> selected;
@@ -304,12 +337,8 @@ class _PointSelector extends StatelessWidget {
           },
           selectedColor: const Color(0xFFB2FF59),
           backgroundColor: const Color(0xFFF3F3F3),
-          labelStyle: TextStyle(
-            color: isSelected ? Colors.black : const Color(0xFF444C39),
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
+          labelStyle: TextStyle(color: isSelected ? Colors.black : const Color(0xFF444C39)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         );
       }).toList()
         ..add(
@@ -318,9 +347,7 @@ class _PointSelector extends StatelessWidget {
             selected: false,
             onSelected: (_) {},
             backgroundColor: const Color(0xFFF3F3F3),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           ),
         ),
     );
@@ -365,39 +392,6 @@ class _InputBox extends StatelessWidget {
           Icon(icon, size: 18, color: const Color(0xFFBDBDBD)),
         ],
       ),
-    );
-  }
-}
-
-class _TypeChip extends StatelessWidget {
-  final String label;
-  final bool selected;
-  final VoidCallback onTap;
-
-  const _TypeChip({
-    required this.label,
-    required this.selected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ChoiceChip(
-      label: Text(
-        label,
-        style: TextStyle(
-          color: selected ? Colors.black : const Color(0xFFBDBDBD),
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-      selected: selected,
-      onSelected: (_) => onTap(),
-      selectedColor: const Color(0xFFB2FF59),
-      backgroundColor: const Color(0xFFF3F3F3),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      labelPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
     );
   }
 }

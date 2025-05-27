@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class FixedCarpoolCreateRoomScreen extends StatefulWidget {
   const FixedCarpoolCreateRoomScreen({super.key});
@@ -40,7 +41,7 @@ class _FixedCarpoolCreateRoomScreenState extends State<FixedCarpoolCreateRoomScr
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Color(0xFF444C39)),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => context.go('/home'),
         ),
       ),
       body: SingleChildScrollView(
