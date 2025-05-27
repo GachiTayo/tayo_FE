@@ -82,6 +82,7 @@ flutter:
     - assets/logo/login.svg
     - assets/icons/login.svg
     - assets/icons/signin.svg
+    - .env
 
   fonts:
     - family: One

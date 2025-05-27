@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double chipMaxWidth = MediaQuery.of(context).size.width / 3.3;
+    double chipMaxWidth = MediaQuery.of(context).size.width / 5.0;
     final primary = Theme.of(context).colorScheme.primary;
 
     return DefaultTabController(
