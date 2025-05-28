@@ -37,6 +37,7 @@ class _SignInScreenState extends State<SignInScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(height: 56.h),
             Center(
               child: SvgPicture.asset(
                 IconPaths.getIcon('signin'),
@@ -153,7 +154,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                   ),
                 ),
-                SizedBox(width: 12.w),
+                Spacer(),
 
                 // 시작하기 버튼 (ElevatedButton, 연두색 배경)
                 SizedBox(
