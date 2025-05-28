@@ -2,10 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
-import 'config/routes.dart';
-import 'config/theme.dart';
-import 'providers/auth_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tayo_fe/config/routes.dart';
+import 'package:tayo_fe/config/theme.dart';
+import 'package:tayo_fe/providers/auth_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

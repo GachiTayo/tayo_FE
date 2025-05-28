@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:tayo_fe/screens/login/login_modal.dart';
 import 'package:tayo_fe/widgets/common/custom_menu_bar.dart';
 import 'package:go_router/go_router.dart';
 

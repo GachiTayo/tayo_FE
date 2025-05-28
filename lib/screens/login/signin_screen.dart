@@ -3,10 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tayo_fe/core/utils/icon_paths.dart';
 import 'package:tayo_fe/providers/auth_provider.dart';
 import 'package:tayo_fe/screens/login/login_modal.dart';
-
-import '../../core/utils/icon_paths.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
