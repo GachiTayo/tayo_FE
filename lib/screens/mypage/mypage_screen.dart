@@ -170,6 +170,10 @@ class _MyPageScreenState extends State<MyPageScreen> {
                             vertical: 8,
                           ),
                         ),
+                        ElevatedButton(
+                          onPressed: () => context.go('/test-rides'),
+                          child: const Text('🧪 Test Rides Page'),
+                        ),
                       ],
                     ),
                   ],
