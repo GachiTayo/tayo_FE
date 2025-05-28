@@ -31,6 +31,18 @@ class _FixedCarpoolCreateRoomScreenState extends State<FixedCarpoolCreateRoomScr
   ];
   List<String> selectedPickup = [];
   List<String> selectedDropoff = [];
+  List<String> selectedDays = [];
+
+  // 승차/하차지점 선택 chip에서 선택/해제
+  void _togglePoint(List<String> selected, String point, ValueChanged<List<String>> onChanged) {
+    final newList = List<String>.from(selected);
+    if (newList.contains(point)) {
+      newList.remove(point);
+    } else {
+      if (newList.length < 3) newList.add(point);
+    }
+    onChanged(newList);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -145,18 +157,29 @@ class _FixedCarpoolCreateRoomScreenState extends State<FixedCarpoolCreateRoomScr
             // 요일
             const Text('요일', style: TextStyle(color: Color(0xFFBDBDBD), fontSize: 14)),
             const SizedBox(height: 8),
-            // 요일 선택 칩 (월~일)
             Wrap(
               spacing: 8,
               children: List.generate(7, (i) {
                 const days = ['월', '화', '수', '목', '금', '토', '일'];
+                final selected = selectedDays.contains(days[i]);
                 return ChoiceChip(
                   label: Text(days[i]),
-                  selected: false,
-                  onSelected: (_) {},
+                  selected: selected,
+                  onSelected: (val) {
+                    setState(() {
+                      if (val) {
+                        selectedDays.add(days[i]);
+                      } else {
+                        selectedDays.remove(days[i]);
+                      }
+                    });
+                  },
                   selectedColor: const Color(0xFFB2FF59),
                   backgroundColor: const Color(0xFFF3F3F3),
-                  labelStyle: const TextStyle(color: Color(0xFF444C39)),
+                  labelStyle: TextStyle(
+                    color: selected ? Colors.black : const Color(0xFF444C39),
+                    fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+                  ),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                 );
               }),
@@ -194,6 +217,11 @@ class _FixedCarpoolCreateRoomScreenState extends State<FixedCarpoolCreateRoomScr
             // 승차지점
             const Text('승차지점', style: TextStyle(color: Color(0xFFBDBDBD), fontSize: 14)),
             const SizedBox(height: 8),
+            _PointSelectedRow(
+              selected: selectedPickup,
+              onDeleted: (label) => setState(() => selectedPickup.remove(label)),
+            ),
+            const SizedBox(height: 8),
             _PointSelector(
               points: points,
               selected: selectedPickup,
@@ -202,6 +230,11 @@ class _FixedCarpoolCreateRoomScreenState extends State<FixedCarpoolCreateRoomScr
             const SizedBox(height: 24),
             // 하차지점
             const Text('하차지점', style: TextStyle(color: Color(0xFFBDBDBD), fontSize: 14)),
+            const SizedBox(height: 8),
+            _PointSelectedRow(
+              selected: selectedDropoff,
+              onDeleted: (label) => setState(() => selectedDropoff.remove(label)),
+            ),
             const SizedBox(height: 8),
             _PointSelector(
               points: points,
@@ -227,7 +260,7 @@ class _FixedCarpoolCreateRoomScreenState extends State<FixedCarpoolCreateRoomScr
             ),
             const SizedBox(height: 20),
             // 차량번호
-            const Text('차번번호', style: TextStyle(color: Color(0xFFBDBDBD), fontSize: 14)),
+            const Text('차량번호', style: TextStyle(color: Color(0xFFBDBDBD), fontSize: 14)),
             const SizedBox(height: 8),
             TextField(
               decoration: _inputDecoration('11가 2222'),
@@ -278,7 +311,83 @@ class _FixedCarpoolCreateRoomScreenState extends State<FixedCarpoolCreateRoomScr
   }
 }
 
-// 아래 _TypeChip, _PointSelector, _InputBox, _inputDecoration 등은 위와 동일하게 사용
+// 선택된 승차/하차지점 가로 칩 나열 (paste.txt 스타일)
+class _PointSelectedRow extends StatelessWidget {
+  final List<String> selected;
+  final void Function(String) onDeleted;
+  const _PointSelectedRow({required this.selected, required this.onDeleted});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: selected.map((label) {
+          return Container(
+            margin: const EdgeInsets.only(right: 8),
+            child: Chip(
+              label: Text(
+                label,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w700,
+                  color: Colors.black,
+                  fontSize: 15,
+                ),
+              ),
+              backgroundColor: const Color(0xFFB2FF59),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              deleteIcon: const Icon(Icons.close, size: 18, color: Color(0xFF444C39)),
+              onDeleted: () => onDeleted(label),
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+}
+
+// 지점 선택 칩 그룹 (아래쪽)
+class _PointSelector extends StatelessWidget {
+  final List<String> points;
+  final List<String> selected;
+  final ValueChanged<List<String>> onChanged;
+  const _PointSelector({required this.points, required this.selected, required this.onChanged});
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: points.map((e) {
+        final isSelected = selected.contains(e);
+        return ChoiceChip(
+          label: Text(e),
+          selected: isSelected,
+          onSelected: (val) {
+            final newList = List<String>.from(selected);
+            if (val) {
+              if (!newList.contains(e) && newList.length < 3) newList.add(e);
+            } else {
+              newList.remove(e);
+            }
+            onChanged(newList);
+          },
+          selectedColor: const Color(0xFFB2FF59),
+          backgroundColor: const Color(0xFFF3F3F3),
+          labelStyle: TextStyle(
+            color: isSelected ? Colors.black : const Color(0xFF444C39),
+            fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+        );
+      }).toList(),
+    );
+  }
+}
+
 // 타입 칩
 class _TypeChip extends StatelessWidget {
   final String label;
@@ -308,56 +417,6 @@ class _TypeChip extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-// 지점 선택 칩 그룹
-class _PointSelector extends StatelessWidget {
-  final List<String> points;
-  final List<String> selected;
-  final ValueChanged<List<String>> onChanged;
-  const _PointSelector({required this.points, required this.selected, required this.onChanged});
-  @override
-  Widget build(BuildContext context) {
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: points.map((e) {
-        final isSelected = selected.contains(e);
-        return ChoiceChip(
-          label: Text(e),
-          selected: isSelected,
-          onSelected: (val) {
-            final newList = List<String>.from(selected);
-            if (val) {
-              newList.add(e);
-            } else {
-              newList.remove(e);
-            }
-            onChanged(newList);
-          },
-          selectedColor: const Color(0xFFB2FF59),
-          backgroundColor: const Color(0xFFF3F3F3),
-          labelStyle: TextStyle(
-            color: isSelected ? Colors.black : const Color(0xFF444C39),
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-        );
-      }).toList()
-        ..add(
-          ChoiceChip(
-            label: const Icon(Icons.add, size: 18, color: Color(0xFF444C39)),
-            selected: false,
-            onSelected: (_) {},
-            backgroundColor: const Color(0xFFF3F3F3),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-          ),
-        ),
     );
   }
 }
