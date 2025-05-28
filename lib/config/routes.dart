@@ -5,6 +5,7 @@ import 'package:tayo_fe/screens/create/carpool_create_room_screen.dart';
 import 'package:tayo_fe/screens/create/fixed_carpool_create_room_screen.dart';
 import 'package:tayo_fe/screens/create/taxi_create_room_screen.dart';
 import 'package:tayo_fe/screens/home/home_screen.dart';
+import 'package:tayo_fe/screens/home/home_test.dart';
 import 'package:tayo_fe/screens/login/login_screen.dart';
 import 'package:tayo_fe/screens/login/signin_screen.dart';
 import 'package:tayo_fe/screens/mypage/mypage_screen.dart';
@@ -48,6 +49,11 @@ class AppRouter {
       GoRoute(
         path: '/create-fixed-carpool',
         builder: (context, state) => const FixedCarpoolCreateRoomScreen(),
+      ),
+      // TODO test route 지우기
+      GoRoute(
+        path: '/test-rides',
+        builder: (context, state) => const RideTestPage(),
       ),
     ],
     errorBuilder:
