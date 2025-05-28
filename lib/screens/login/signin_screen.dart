@@ -37,7 +37,7 @@ class _SignInScreenState extends State<SignInScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 56.h),
+            SizedBox(height: 90.h),
             Center(
               child: SvgPicture.asset(
                 IconPaths.getIcon('signin'),
@@ -46,8 +46,18 @@ class _SignInScreenState extends State<SignInScreen> {
             ),
             SizedBox(height: 48.h),
 
-            // 이름
-            Text('이름', style: Theme.of(context).textTheme.titleMedium),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('이름', style: TextStyle(fontFamily: 'Six', fontSize: 12)),
+                SizedBox(width: 4),
+                Text(
+                  '●',
+                  style: TextStyle(fontSize: 7, color: Color(0xFFA6FE70)),
+                ),
+              ],
+            ),
+
             SizedBox(height: 14.h),
             SizedBox(
               width: 342.w,
@@ -60,7 +70,17 @@ class _SignInScreenState extends State<SignInScreen> {
             SizedBox(height: 28.h),
 
             // 이메일
-            Text('이메일', style: Theme.of(context).textTheme.titleMedium),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('이메일', style: TextStyle(fontFamily: 'Six', fontSize: 12)),
+                SizedBox(width: 4),
+                Text(
+                  '●',
+                  style: TextStyle(fontSize: 7, color: Color(0xFFA6FE70)),
+                ),
+              ],
+            ),
             SizedBox(height: 14.h),
             SizedBox(
               width: 342.w,
@@ -73,14 +93,19 @@ class _SignInScreenState extends State<SignInScreen> {
             SizedBox(height: 11.h),
             Text(
               '한동대학교 메일로만 가입이 가능해요',
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
+              style: TextStyle(
+                fontFamily: 'Four',
+                fontSize: 10,
+                color: Colors.grey[600],
+              ),
             ),
             SizedBox(height: 28.h),
 
             // 계좌번호
-            Text('계좌번호 및 은행명', style: Theme.of(context).textTheme.titleMedium),
+            Text(
+              '계좌번호 및 은행명',
+              style: TextStyle(fontFamily: 'Six', fontSize: 12),
+            ),
             SizedBox(height: 14.h),
             SizedBox(
               width: 342.w,
@@ -96,14 +121,16 @@ class _SignInScreenState extends State<SignInScreen> {
             SizedBox(height: 11.h),
             Text(
               '마이페이지에서 내용을 수정할 수 있어요',
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
+              style: TextStyle(
+                fontFamily: 'Four',
+                fontSize: 10,
+                color: Colors.grey[600],
+              ),
             ),
             SizedBox(height: 28.h),
 
             // 차량번호
-            Text('차량번호', style: Theme.of(context).textTheme.titleMedium),
+            Text('차량번호', style: TextStyle(fontFamily: 'Six', fontSize: 12)),
             SizedBox(height: 11.h),
             SizedBox(
               width: 342.w,
@@ -119,12 +146,13 @@ class _SignInScreenState extends State<SignInScreen> {
             SizedBox(height: 16.h),
             Text(
               '마이페이지에서 내용을 수정할 수 있어요',
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
+              style: TextStyle(
+                fontFamily: 'Four',
+                fontSize: 10,
+                color: Colors.grey[600],
+              ),
             ),
             SizedBox(height: 28.h),
-            const SizedBox(height: 48),
 
             // 버튼
             Row(
@@ -147,9 +175,9 @@ class _SignInScreenState extends State<SignInScreen> {
                     child: Text(
                       '뒤로가기',
                       style: TextStyle(
-                        color: Colors.black87,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
+                        fontFamily: 'Seven',
+                        fontSize: 14,
+                        color: Color(0xFF3F473A),
                       ),
                     ),
                   ),
@@ -207,7 +235,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFB5FF8A), // 연두색 (이미지 참고)
+                      backgroundColor: const Color(0xFFA6FE70),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
@@ -216,9 +244,9 @@ class _SignInScreenState extends State<SignInScreen> {
                     child: Text(
                       '시작하기',
                       style: TextStyle(
-                        color: Colors.black87,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
+                        fontFamily: 'Seven',
+                        fontSize: 14,
+                        color: Color(0xFF3F473A),
                       ),
                     ),
                   ),
