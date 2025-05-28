@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tayo_fe/providers/auth_provider.dart';
-import 'my_info_screen.dart';
-import 'usage_history_screen.dart';
+import 'package:tayo_fe/screens/mypage/my_info_screen.dart';
+import 'package:tayo_fe/screens/mypage/usage_history_screen.dart';
 
 class MyPageScreen extends StatefulWidget {
   const MyPageScreen({super.key});

@@ -19,10 +19,7 @@ class CustomMenuBar extends StatelessWidget {
             labelColor: Colors.black,
             unselectedLabelColor: Colors.black45,
             indicator: const BoxDecoration(), // 인디케이터 숨김
-            tabs: const [
-              Tab(text: '카풀 / 택시'),
-              Tab(text: '고정카풀'),
-            ],
+            tabs: const [Tab(text: '카풀 / 택시'), Tab(text: '고정카풀')],
           ),
           // 커스텀 그라데이션 라인 + 원
           Positioned.fill(
@@ -77,44 +74,36 @@ class _TabIndicatorPainter extends CustomPainter {
     final y = size.height - 2; // 2px 위쪽에 위치
 
     // shader의 시작점/끝점을 (0, y) ~ (width, y)로 맞춤
-    final linePaint = Paint()
-      ..shader = LinearGradient(
-        begin: Alignment.centerLeft,
-        end: Alignment.centerRight,
-        colors: [
-          color.withOpacity(0.0),
-          color.withOpacity(0.5),
-          color,
-          color.withOpacity(0.5),
-          color.withOpacity(0.0),
-        ],
-        stops: const [0.0, 0.15, 0.5, 0.85, 1.0],
-      ).createShader(Rect.fromPoints(
-        Offset(0, y),
-        Offset(width, y),
-      ))
-      ..strokeWidth = 4
-      ..style = PaintingStyle.stroke;
+    final linePaint =
+        Paint()
+          ..shader = LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [
+              color.withOpacity(0.0),
+              color.withOpacity(0.5),
+              color,
+              color.withOpacity(0.5),
+              color.withOpacity(0.0),
+            ],
+            stops: const [0.0, 0.15, 0.5, 0.85, 1.0],
+          ).createShader(Rect.fromPoints(Offset(0, y), Offset(width, y)))
+          ..strokeWidth = 4
+          ..style = PaintingStyle.stroke;
 
     // 라인 그리기 (탭바 하단 전체)
-    canvas.drawLine(
-      Offset(0, y),
-      Offset(width, y),
-      linePaint,
-    );
+    canvas.drawLine(Offset(0, y), Offset(width, y), linePaint);
 
     // 연두색 원 (크기 0.8배: 반지름 8 → 6.4)
     final circlePaint = Paint()..color = color;
-    canvas.drawCircle(
-      Offset(centerX, y),
-      6.4,
-      circlePaint,
-    );
+    canvas.drawCircle(Offset(centerX, y), 6.4, circlePaint);
   }
 
   @override
   bool shouldRepaint(covariant _TabIndicatorPainter oldDelegate) =>
-      centerX != oldDelegate.centerX || color != oldDelegate.color || width != oldDelegate.width;
+      centerX != oldDelegate.centerX ||
+      color != oldDelegate.color ||
+      width != oldDelegate.width;
 }
 
 class MyRidesScreen extends StatelessWidget {
@@ -268,7 +257,7 @@ class _RoomCard extends StatelessWidget {
             color: Colors.black12,
             blurRadius: 2,
             offset: const Offset(0, 1),
-          )
+          ),
         ],
       ),
       child: Column(
@@ -285,10 +274,7 @@ class _RoomCard extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             room['desc'] ?? '',
-            style: const TextStyle(
-              fontSize: 14,
-              color: Color(0xFF444C39),
-            ),
+            style: const TextStyle(fontSize: 14, color: Color(0xFF444C39)),
           ),
         ],
       ),

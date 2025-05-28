@@ -12,7 +12,7 @@ class LoginModal extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           const Text(
-            '‘같이 타요\'는\n한동대학교 공식 메일만\n사용 가능합니다.',
+            '‘같이 타요\'는\n54208한동대학교 공식 메일만\n사용 가능합니다.',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 16,
