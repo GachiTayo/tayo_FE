@@ -96,10 +96,6 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
                 Spacer(flex: 1),
-                ElevatedButton(
-                  onPressed: () => context.go('/mypage'),
-                  child: const Text('마이페이쥐'),
-                ),
               ],
             ),
           ),

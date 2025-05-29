@@ -1,11 +1,12 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class RideService {
-  final String baseUrl = 'http://localhost:8080/api/rides';
+  static final String baseUrl = dotenv.env['BASE_URL'] ?? "";
 
   Future<List<dynamic>> fetchUpcomingRides(String type) async {
-    final url = Uri.parse('$baseUrl/upcoming/type/$type');
+    final url = Uri.parse('$baseUrl/api/rides/upcoming/type/$type');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
