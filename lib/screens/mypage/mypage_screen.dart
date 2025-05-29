@@ -26,10 +26,10 @@ class _MyPageScreenState extends State<MyPageScreen> {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final info = await authProvider.getUserInfo(); // API 요청
 
-    if (info == null && mounted) {
-      context.go('/login'); // userId가 잘못되었거나 삭제됨
-      return;
-    }
+    // if (info == null && mounted) {
+    //   context.go('/login'); // userId가 잘못되었거나 삭제됨
+    //   return;
+    // }
 
     setState(() {
       userData = info;

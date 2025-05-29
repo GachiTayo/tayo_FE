@@ -18,7 +18,7 @@ class _CarpoolCreateRoomScreenState extends State<CarpoolCreateRoomScreen> {
   String description = '';
   int descriptionLength = 0;
 
-  final List<String> points = [
+  List<String> points = [
     '오흡', '비벤', '야공', '버정', '현동',
     '느헴', '채플', '다이소', '그할마', '궁물촌',
     '유아', '이원'
@@ -31,6 +31,51 @@ class _CarpoolCreateRoomScreenState extends State<CarpoolCreateRoomScreen> {
   List<String> selectedPickup = [];
   List<String> selectedDropoff = [];
   String selectedType = '카풀';
+
+  // 입력 다이얼로그 함수
+  Future<void> _showAddPointDialog({
+    required BuildContext context,
+    required Function(String) onAdd,
+  }) async {
+    final controller = TextEditingController();
+    final formKey = GlobalKey<FormState>();
+    await showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('지점 추가'),
+        content: Form(
+          key: formKey,
+          child: TextFormField(
+            controller: controller,
+            autofocus: true,
+            decoration: const InputDecoration(
+              hintText: '지점 이름 입력',
+            ),
+            validator: (v) {
+              if (v == null || v.trim().isEmpty) return '지점명을 입력하세요';
+              if (points.contains(v.trim())) return '이미 존재하는 지점입니다';
+              return null;
+            },
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('취소'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (formKey.currentState!.validate()) {
+                onAdd(controller.text.trim());
+                Navigator.pop(context);
+              }
+            },
+            child: const Text('추가'),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -133,26 +178,36 @@ class _CarpoolCreateRoomScreenState extends State<CarpoolCreateRoomScreen> {
             const SizedBox(height: 8),
             _SelectedPointRow(
               selected: selectedPickup,
-              onDeleted: (point) => setState(() => selectedPickup.remove(point)),
             ),
             const SizedBox(height: 8),
             _PointSelector(
               points: points,
               selected: selectedPickup,
               onChanged: (list) => setState(() => selectedPickup = list),
+              onAddPoint: (context) async {
+                await _showAddPointDialog(
+                  context: context,
+                  onAdd: (newPoint) => setState(() => points.add(newPoint)),
+                );
+              },
             ),
             const SizedBox(height: 24),
             const Text('하차지점', style: TextStyle(color: Color(0xFFBDBDBD), fontSize: 14)),
             const SizedBox(height: 8),
             _SelectedPointRow(
               selected: selectedDropoff,
-              onDeleted: (point) => setState(() => selectedDropoff.remove(point)),
             ),
             const SizedBox(height: 8),
             _PointSelector(
               points: points,
               selected: selectedDropoff,
               onChanged: (list) => setState(() => selectedDropoff = list),
+              onAddPoint: (context) async {
+                await _showAddPointDialog(
+                  context: context,
+                  onAdd: (newPoint) => setState(() => points.add(newPoint)),
+                );
+              },
             ),
             const SizedBox(height: 24),
             const Text('계좌번호 및 은행명', style: TextStyle(color: Color(0xFFBDBDBD), fontSize: 14)),
@@ -170,7 +225,7 @@ class _CarpoolCreateRoomScreenState extends State<CarpoolCreateRoomScreen> {
               onChanged: (v) => setState(() => price = v),
             ),
             const SizedBox(height: 20),
-            const Text('차번번호', style: TextStyle(color: Color(0xFFBDBDBD), fontSize: 14)),
+            const Text('차량번호', style: TextStyle(color: Color(0xFFBDBDBD), fontSize: 14)),
             const SizedBox(height: 8),
             TextField(
               decoration: _inputDecoration('11가 2222'),
@@ -222,7 +277,6 @@ class _TypeChip extends StatelessWidget {
   final VoidCallback onTap;
 
   const _TypeChip({required this.label, required this.selected, required this.onTap});
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -234,13 +288,15 @@ class _TypeChip extends StatelessWidget {
           color: selected ? const Color(0xFFB2FF59) : Colors.white,
           borderRadius: BorderRadius.circular(16),
           border: selected ? null : Border.all(color: const Color(0xFFDADADA), width: 1),
-          boxShadow: selected ? [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
-            ),
-          ] : [],
+          boxShadow: selected
+              ? [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ]
+              : [],
         ),
         child: Text(
           label,
@@ -257,8 +313,7 @@ class _TypeChip extends StatelessWidget {
 
 class _SelectedPointRow extends StatelessWidget {
   final List<String> selected;
-  final void Function(String) onDeleted;
-  const _SelectedPointRow({required this.selected, required this.onDeleted});
+  const _SelectedPointRow({required this.selected});
 
   @override
   Widget build(BuildContext context) {
@@ -269,23 +324,22 @@ class _SelectedPointRow extends StatelessWidget {
             child: Container(
               margin: const EdgeInsets.only(right: 8),
               height: 40,
-              child: Chip(
-                label: Container(
-                  constraints: const BoxConstraints(minWidth: 96),
-                  child: Center(
-                    child: Text(
-                      selected[i],
-                      style: const TextStyle(fontWeight: FontWeight.w600),
+              child: Container(
+                constraints: const BoxConstraints(minWidth: 96),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFB2FF59),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Center(
+                  child: Text(
+                    selected[i],
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black,
+                      fontSize: 15,
                     ),
                   ),
                 ),
-                backgroundColor: const Color(0xFFB2FF59),
-                deleteIcon: const Icon(Icons.close, size: 16),
-                onDeleted: () => onDeleted(selected[i]),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 16),
               ),
             ),
           );
@@ -315,41 +369,53 @@ class _PointSelector extends StatelessWidget {
   final List<String> points;
   final List<String> selected;
   final ValueChanged<List<String>> onChanged;
-  const _PointSelector({required this.points, required this.selected, required this.onChanged});
+  final Future<void> Function(BuildContext context)? onAddPoint;
+  const _PointSelector({
+    required this.points,
+    required this.selected,
+    required this.onChanged,
+    this.onAddPoint,
+  });
+
   @override
   Widget build(BuildContext context) {
     return Wrap(
       spacing: 8,
       runSpacing: 8,
-      children: points.map((e) {
-        final isSelected = selected.contains(e);
-        return ChoiceChip(
-          label: Text(e),
-          selected: isSelected,
-          onSelected: (val) {
-            final newList = List<String>.from(selected);
-            if (val) {
-              if (!newList.contains(e) && newList.length < 3) newList.add(e);
-            } else {
-              newList.remove(e);
-            }
-            onChanged(newList);
-          },
-          selectedColor: const Color(0xFFB2FF59),
-          backgroundColor: const Color(0xFFF3F3F3),
-          labelStyle: TextStyle(color: isSelected ? Colors.black : const Color(0xFF444C39)),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        );
-      }).toList()
-        ..add(
-          ChoiceChip(
-            label: const Icon(Icons.add, size: 18, color: Color(0xFF444C39)),
-            selected: false,
-            onSelected: (_) {},
+      children: [
+        ...points.map((e) {
+          final isSelected = selected.contains(e);
+          return ChoiceChip(
+            label: Text(e),
+            selected: isSelected,
+            onSelected: (val) {
+              final newList = List<String>.from(selected);
+              if (val) {
+                if (!newList.contains(e) && newList.length < 3) newList.add(e);
+              } else {
+                newList.remove(e);
+              }
+              onChanged(newList);
+            },
+            selectedColor: const Color(0xFFB2FF59),
             backgroundColor: const Color(0xFFF3F3F3),
+            labelStyle: TextStyle(
+              color: isSelected ? Colors.black : const Color(0xFF444C39),
+              fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+            ),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          ),
+          );
+        }),
+        ChoiceChip(
+          label: const Icon(Icons.add, size: 18, color: Color(0xFF444C39)),
+          selected: false,
+          onSelected: (_) async {
+            if (onAddPoint != null) await onAddPoint!(context);
+          },
+          backgroundColor: const Color(0xFFF3F3F3),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         ),
+      ],
     );
   }
 }

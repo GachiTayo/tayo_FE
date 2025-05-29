@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class UsageHistoryScreen extends StatelessWidget {
   const UsageHistoryScreen({super.key});
@@ -9,7 +10,7 @@ class UsageHistoryScreen extends StatelessWidget {
       "user": "김한동",
       "date": "4월 3일",
       "time": "15:00",
-      "start": "오흠",
+      "start": "오흡",
       "via": "다이소",
       "end": "유아",
       "bank": "1101-328-16399 토스뱅크 김한동",
@@ -20,7 +21,7 @@ class UsageHistoryScreen extends StatelessWidget {
       "user": "김한동",
       "date": "4월 3일",
       "time": "15:00",
-      "start": "오흠",
+      "start": "오흡",
       "via": "다이소",
       "end": "유아",
       "bank": "1101-328-16399 토스뱅크 김한동",
@@ -46,22 +47,25 @@ class UsageHistoryScreen extends StatelessWidget {
           ),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF444C39)),
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF3F473A)),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      body: ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-        itemCount: sampleHistory.length,
-        separatorBuilder: (context, idx) => const Divider(
-          color: Color(0xFFE0E0E0),
-          height: 40,
-          thickness: 1,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 36),
+        child: ListView.separated(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          itemCount: sampleHistory.length,
+          separatorBuilder: (context, idx) => const Divider(
+            color: Color(0xFFE0E0E0),
+            height: 40,
+            thickness: 1,
+          ),
+          itemBuilder: (context, idx) {
+            final item = sampleHistory[idx];
+            return _UsageHistoryCard(item: item);
+          },
         ),
-        itemBuilder: (context, idx) {
-          final item = sampleHistory[idx];
-          return _UsageHistoryCard(item: item);
-        },
       ),
     );
   }
@@ -92,7 +96,7 @@ class _UsageHistoryCard extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 8),
-        // 날짜, 시간, 경로
+        // 날짜, 시간
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -119,86 +123,18 @@ class _UsageHistoryCard extends StatelessWidget {
               ],
             ),
             const SizedBox(width: 24),
-            // 경로
+            // 경로(텍스트+라인)
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        item['start'],
-                        style: const TextStyle(
-                          color: Color(0xFF444C39),
-                          fontSize: 15,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      // 경로 선
-                      Expanded(
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Container(
-                              height: 2,
-                              color: const Color(0xFFDADADA),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const SizedBox(width: 0),
-                                const Icon(Icons.circle, size: 6, color: Color(0xFFDADADA)),
-                                const SizedBox(width: 0),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        item['via'],
-                        style: const TextStyle(
-                          color: Color(0xFF444C39),
-                          fontSize: 15,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Container(
-                              height: 2,
-                              color: const Color(0xFFDADADA),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                const Icon(Icons.circle, size: 6, color: Color(0xFFDADADA)),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        item['end'],
-                        style: const TextStyle(
-                          color: Color(0xFF444C39),
-                          fontSize: 15,
-                        ),
-                      ),
-                      const SizedBox(width: 4),
-                      const Icon(Icons.location_on, size: 18, color: Color(0xFFBDBDBD)),
-                    ],
-                  ),
-                ],
+              child: RouteLineWidget(
+                start: item['start'],
+                via: item['via'],
+                end: item['end'],
               ),
             ),
           ],
         ),
         const SizedBox(height: 16),
-        // 계좌 정보
+        // 계좌 정보 (복사 버튼 포함)
         Row(
           children: [
             Text(
@@ -209,7 +145,21 @@ class _UsageHistoryCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 4),
-            const Icon(Icons.copy, size: 14, color: Color(0xFFBDBDBD)),
+            IconButton(
+              icon: const Icon(Icons.copy, size: 14, color: Color(0xFFBDBDBD)),
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+              tooltip: '계좌번호 복사',
+              onPressed: () async {
+                await Clipboard.setData(ClipboardData(text: item['bank']));
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('계좌번호가 복사되었습니다: ${item['bank']}'),
+                    duration: const Duration(seconds: 1),
+                  ),
+                );
+              },
+            ),
           ],
         ),
         const SizedBox(height: 8),
@@ -235,6 +185,92 @@ class _UsageHistoryCard extends StatelessWidget {
                 ),
               ),
             ],
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class RouteLineWidget extends StatelessWidget {
+  final String start;
+  final String via;
+  final String end;
+
+  const RouteLineWidget({
+    super.key,
+    required this.start,
+    required this.via,
+    required this.end,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    const labelStyle = TextStyle(
+      color: Color(0xFF444C39),
+      fontWeight: FontWeight.w500,
+      fontSize: 15,
+    );
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(start, style: labelStyle),
+              ),
+            ),
+            Expanded(
+              child: Center(child: Text(via, style: labelStyle)),
+            ),
+            Expanded(
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Text(end, style: labelStyle),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // 시작점
+            Container(
+              width: 8,
+              height: 8,
+              decoration: const BoxDecoration(
+                color: Color(0xFFDADADA),
+                shape: BoxShape.circle,
+              ),
+            ),
+            // 시작~경유 선
+            Expanded(
+              child: Container(
+                height: 2,
+                color: const Color(0xFFDADADA),
+              ),
+            ),
+            // 경유점
+            Container(
+              width: 8,
+              height: 8,
+              decoration: const BoxDecoration(
+                color: Color(0xFFDADADA),
+                shape: BoxShape.circle,
+              ),
+            ),
+            // 경유~도착 선
+            Expanded(
+              child: Container(
+                height: 2,
+                color: const Color(0xFFDADADA),
+              ),
+            ),
+            // 도착 아이콘
+            const Icon(Icons.location_on, size: 16, color: Color(0xFFBDBDBD)),
           ],
         ),
       ],
