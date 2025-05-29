@@ -26,7 +26,7 @@ class AppRouter {
         routes: [
           GoRoute(
             path: '/home',
-            builder: (context, state) => const HomeScreen(),
+            builder: (context, state) => const RideTestPage(),
           ),
           GoRoute(
             path: '/rides',
