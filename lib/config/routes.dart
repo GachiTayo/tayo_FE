@@ -8,6 +8,7 @@ import 'package:tayo_fe/screens/home/home_screen.dart';
 import 'package:tayo_fe/screens/home/home_test.dart';
 import 'package:tayo_fe/screens/login/login_screen.dart';
 import 'package:tayo_fe/screens/login/signin_screen.dart';
+import 'package:tayo_fe/screens/manage/room_manage_screen.dart';
 import 'package:tayo_fe/screens/mypage/mypage_screen.dart';
 import 'package:tayo_fe/screens/myrides/myrides.dart';
 import 'package:tayo_fe/widgets/common/main_scaffold.dart';
@@ -55,6 +56,11 @@ class AppRouter {
         path: '/test-rides',
         builder: (context, state) => const RideTestPage(),
       ),
+      // TODO 여기 manage routing 있어요
+      // GoRoute(
+      //   path: '/manage',
+      //   builder: (context, state) => const RoomManageScreen(title: "title", bank: "bank", stops: "stops", riders: "riders", notice: "notice"),
+      // ),
     ],
     errorBuilder:
         (context, state) =>
