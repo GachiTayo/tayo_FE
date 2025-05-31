@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
+
 
 void main() {
   runApp(const MaterialApp(
@@ -369,17 +372,31 @@ class _RideCard extends StatelessWidget {
           if (!isMine) ...[
             const SizedBox(height: 12),
             // 계좌 정보
-            Row(
-              children: [
-                Text(
-                  room['account'] ?? '',
-                  style: const TextStyle(fontSize: 13, color: Color(0xFF888888)),
-                ),
-                const SizedBox(width: 4),
-                Icon(Icons.copy, size: 13, color: Color(0xFFB6E388)),
-              ],
-            ),
-          ],
+    Row(
+    children: [
+    Text(
+    room['account'] ?? '',
+    style: const TextStyle(fontSize: 13, color: Color(0xFF888888)),
+    ),
+    const SizedBox(width: 4),
+    InkWell(
+    onTap: () async {
+    final text = room['account'] ?? '';
+    if (text.isNotEmpty) {
+    await Clipboard.setData(ClipboardData(text: text));
+    ScaffoldMessenger.of(context).showSnackBar(
+    const SnackBar(
+    content: Text('계좌번호가 복사되었습니다.'),
+    duration: Duration(seconds: 1),
+    ),
+    );
+    }
+    },
+    child: const Icon(Icons.copy, size: 13, color: Color(0xFFB6E388)),
+    ),
+    ],
+    ),
+    ],
           const SizedBox(height: 12),
           // 하단: 금액, 인원, 버튼
           Row(
@@ -412,7 +429,10 @@ class _RideCard extends StatelessWidget {
               const SizedBox(width: 16),
               if (isMine)
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    //TODO 이거 builder를 백 연결되야 뜨게 해서 연결하고 풀면 될 것 같아요
+                    //context.go('/manage'); // 원하는 경로로 이동
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF444C39),
                     foregroundColor: Colors.white,
@@ -426,7 +446,57 @@ class _RideCard extends StatelessWidget {
                 )
               else ...[
                 OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) {
+                        return Dialog(
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          child: Container(
+                            width: 300,
+                            padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Text(
+                                  '입금이 완료되었습니다.',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Color(0xFF222222),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                const SizedBox(height: 24),
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop(); // 모달 닫기
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xFF444C39),
+                                      foregroundColor: Colors.white,
+                                      padding: const EdgeInsets.symmetric(vertical: 14),
+                                      textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                    child: const Text('확인'),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
                   style: OutlinedButton.styleFrom(
                     foregroundColor: const Color(0xFF444C39),
                     side: const BorderSide(color: Color(0xFF888888)),
@@ -438,9 +508,82 @@ class _RideCard extends StatelessWidget {
                   ),
                   child: const Text('입금완료'),
                 ),
+
                 const SizedBox(width: 8),
+
                 OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) {
+                        return Dialog(
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          child: Container(
+                            width: 300,
+                            padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 24),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Text(
+                                  '방을 나가시겠습니까?',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Color(0xFF222222),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                const SizedBox(height: 24),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: OutlinedButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop(); // 모달 닫기
+                                        },
+                                        style: OutlinedButton.styleFrom(
+                                          foregroundColor: const Color(0xFF222222),
+                                          side: const BorderSide(color: Color(0xFF888888)),
+                                          padding: const EdgeInsets.symmetric(vertical: 14),
+                                          textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(8),
+                                          ),
+                                        ),
+                                        child: const Text('취소'),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop(); // 모달 닫기
+                                          // 실제 나가기 동작 추가 (예: setState, API 호출 등)
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: const Color(0xFF444C39),
+                                          foregroundColor: Colors.white,
+                                          padding: const EdgeInsets.symmetric(vertical: 14),
+                                          textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(8),
+                                          ),
+                                        ),
+                                        child: const Text('나가기'),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
                   style: OutlinedButton.styleFrom(
                     foregroundColor: const Color(0xFF444C39),
                     side: const BorderSide(color: Color(0xFF888888)),
@@ -452,6 +595,7 @@ class _RideCard extends StatelessWidget {
                   ),
                   child: const Text('나가기'),
                 ),
+
               ],
             ],
           ),
